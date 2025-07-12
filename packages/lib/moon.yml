@@ -5,8 +5,12 @@ tasks:
       - build-tsp
     toolchain: node
   build-ts:
-    command: tsc
+    command: unbuild
     toolchain: node
+    inputs:
+      - src/**/*
+    outputs:
+      - dist/**/*
   build-tsp:
     command:
       - tsp
@@ -16,6 +20,8 @@ tasks:
       - "--import"
       - "@typespec/library-linter"
       - "--no-emit"
+    inputs:
+      - lib/**/*
     toolchain: node
     deps:
       - build-ts
@@ -44,10 +50,10 @@ tasks:
       - --fix
     toolchain: node
   test:
-    command:
-      - node
-      - "--test"
+    command: vitest
     toolchain: node
+    deps:
+      - build
   watch:
     command:
       - tsc

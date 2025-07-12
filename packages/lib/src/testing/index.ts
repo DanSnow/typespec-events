@@ -1,12 +1,9 @@
+import { fileURLToPath } from 'node:url';
 import { resolvePath } from '@typespec/compiler';
-import {
-  createTestLibrary,
-  TypeSpecTestLibrary,
-} from '@typespec/compiler/testing';
-import { fileURLToPath } from 'url';
+import { createTestLibrary, type TypeSpecTestLibrary } from '@typespec/compiler/testing';
 
-export const TypespecEventsX2FLibTestLibrary: TypeSpecTestLibrary =
-  createTestLibrary({
-    name: '@typespec-events&#x2F;lib',
-    packageRoot: resolvePath(fileURLToPath(import.meta.url), '../../../../'),
-  });
+const packageRoot = resolvePath(fileURLToPath(import.meta.url), '../../../');
+export const TypespecEventsTestLibrary: TypeSpecTestLibrary = createTestLibrary({
+  name: '@typespec-events/lib',
+  packageRoot,
+});

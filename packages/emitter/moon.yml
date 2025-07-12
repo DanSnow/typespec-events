@@ -1,6 +1,6 @@
 tasks:
   build:
-    command: tsc
+    command: unbuild
     toolchain: node
   format:
     deps:
@@ -27,10 +27,10 @@ tasks:
       - --fix
     toolchain: node
   test:
-    command:
-      - node
-      - "--test"
+    command: vitest
     toolchain: node
+    deps:
+      - build
   watch:
     command:
       - tsc

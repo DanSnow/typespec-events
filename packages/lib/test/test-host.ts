@@ -1,16 +1,24 @@
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createTestHost, createTestWrapper } from '@typespec/compiler/testing';
-import { TypespecEventsX2FLibTestLibrary } from '../src/testing/index.js';
+import { TypespecEventsTestLibrary } from '../src/testing/index.js';
 
-export async function createTypespecEventsX2FLibTestHost() {
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export function createTypespecEventsTestHost() {
   return createTestHost({
-    libraries: [TypespecEventsX2FLibTestLibrary],
+    libraries: [TypespecEventsTestLibrary],
   });
 }
 
-export async function createTypespecEventsX2FLibTestRunner() {
-  const host = await createTypespecEventsX2FLibTestHost();
+export async function createTypespecEventsTestRunner() {
+  const host = await createTypespecEventsTestHost();
+  const distDir = resolve(__dirname, '../dist');
+
+  // No idea why the dist folder isn't add to test fs
+  await host.addRealFolder('/test/node_modules/@typespec-events/lib/dist', distDir);
 
   return createTestWrapper(host, {
-    autoUsings: ['TypespecEventsX2FLib'],
+    autoUsings: ['TypespecEvents'],
   });
 }

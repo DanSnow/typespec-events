@@ -3,6 +3,12 @@ import { StateKeys } from './lib.js';
 
 export const namespace = 'TypespecEvents';
 
+export const $decorators = {
+  [namespace]: {
+    event,
+  },
+};
+
 /**
  * Implementation of the `@event` decorator.
  * Marks a TypeSpec model as a tracking event.
@@ -10,7 +16,7 @@ export const namespace = 'TypespecEvents';
  * @param context Decorator context.
  * @param target Decorator target. Must be a model.
  */
-export function $event(context: DecoratorContext, target: Model) {
+export function event(context: DecoratorContext, target: Model) {
   context.program.stateMap(StateKeys.isEvent).set(target, true);
 }
 
