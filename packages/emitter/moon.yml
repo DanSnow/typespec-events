@@ -1,0 +1,39 @@
+tasks:
+  build:
+    command: tsc
+    toolchain: node
+  format:
+    deps:
+      - format-typespec
+      - format-ts
+    options:
+      runDepsInParallel: true
+  format-typespec:
+    command:
+      - prettier
+      - "./**/*.tsp"
+      - "--write"
+    toolchain: node
+  format-ts:
+    command:
+      - biome
+      - format
+      - --write
+    toolchain: node
+  lint:
+    command:
+      - biome
+      - lint
+      - --fix
+    toolchain: node
+  test:
+    command:
+      - node
+      - "--test"
+    toolchain: node
+  watch:
+    command:
+      - tsc
+      - "--watch"
+    local: true
+    toolchain: node

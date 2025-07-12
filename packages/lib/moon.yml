@@ -1,0 +1,54 @@
+tasks:
+  build:
+    deps:
+      - build-ts
+      - build-tsp
+    toolchain: node
+  build-ts:
+    command: tsc
+    toolchain: node
+  build-tsp:
+    command:
+      - tsp
+      - compile
+      - "."
+      - "--warn-as-error"
+      - "--import"
+      - "@typespec/library-linter"
+      - "--no-emit"
+    toolchain: node
+  format:
+    deps:
+      - format-typespec
+      - format-ts
+    options:
+      runDepsInParallel: true
+  format-typespec:
+    command:
+      - prettier
+      - "./**/*.tsp"
+      - "--write"
+    toolchain: node
+  format-ts:
+    command:
+      - biome
+      - format
+      - --write
+    toolchain: node
+  lint:
+    command:
+      - biome
+      - lint
+      - --fix
+    toolchain: node
+  test:
+    command:
+      - node
+      - "--test"
+    toolchain: node
+  watch:
+    command:
+      - tsc
+      - "--watch"
+    local: true
+    toolchain: node

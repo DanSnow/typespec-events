@@ -1,19 +1,20 @@
 {
   "name": "typespec-events",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.12.4",
-  "description": "",
-  "author": "",
-  "keywords": [],
-  "main": "index.js",
   "devDependencies": {
     "@antfu/eslint-config": "^4.16.2",
     "@biomejs/biome": "2.1.1",
+    "@moonrepo/cli": "^1.38.5",
     "@typespec/prettier-plugin-typespec": "^1.1.0",
     "eslint": "^9.31.0",
     "lefthook": "^1.12.2",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "ultracite": "5.0.32"
-  }
+  },
+  "description": "",
+  "author": "",
+  "keywords": [],
+  "private": true,
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }

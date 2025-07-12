@@ -1,7 +1,7 @@
-import { DecoratorContext, Operation, Program } from "@typespec/compiler";
-import { StateKeys, reportDiagnostic } from "./lib.js";
+import { DecoratorContext, Operation, Program } from '@typespec/compiler';
+import { StateKeys, reportDiagnostic } from './lib.js';
 
-export const namespace = "TypespecEventsX2FLib";
+export const namespace = 'TypespecEventsX2FLib';
 
 /**
  * __Example implementation of the `@alternateName` decorator.__
@@ -10,10 +10,14 @@ export const namespace = "TypespecEventsX2FLib";
  * @param target Decorator target. Must be an operation.
  * @param name Alternate name.
  */
-export function $alternateName(context: DecoratorContext, target: Operation, name: string) {
-  if (name === "banned") {
+export function $alternateName(
+  context: DecoratorContext,
+  target: Operation,
+  name: string
+) {
+  if (name === 'banned') {
     reportDiagnostic(context.program, {
-      code: "banned-alternate-name",
+      code: 'banned-alternate-name',
       target: context.getArgumentTarget(0)!,
       format: { name },
     });
@@ -28,6 +32,9 @@ export function $alternateName(context: DecoratorContext, target: Operation, nam
  * @param target Decorator target. Must be an operation.
  * @returns Altenate name if provided on the given operation or undefined
  */
-export function getAlternateName(program: Program, target: Operation): string | undefined {
+export function getAlternateName(
+  program: Program,
+  target: Operation
+): string | undefined {
   return program.stateMap(StateKeys.alternateName).get(target);
 }
