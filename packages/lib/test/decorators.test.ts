@@ -1,7 +1,7 @@
 import type { Model } from '@typespec/compiler';
 import { type BasicTestRunner, expectDiagnostics } from '@typespec/compiler/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { isEvent } from '../src/decorators.js';
+import { getEventName, isEvent } from '../src/decorators.js';
 import { createTypespecEventsTestRunner } from './test-host.js';
 
 describe('decorators', () => {
@@ -12,13 +12,29 @@ describe('decorators', () => {
   });
 
   describe('@event', () => {
-    it('set event on model', async () => {
-      const { TestEvent } = (await runner.compile('@event @test model TestEvent {}')) as { TestEvent: Model };
-      expect(isEvent(runner.program, TestEvent)).toBe(true);
+    it('sets and retrieves event name on model', async () => {
+      const eventName = 'MyTestEvent';
+      const { TestEvent } = (await runner.compile(`@event("${eventName}") @test model TestEvent {}`)) as {
+        TestEvent: Model;
+      };
+      expect(getEventName(runner.program, TestEvent)).toBe(eventName);
     });
 
-    it('emit diagnostic if not used on a model', async () => {
-      const diagnostics = await runner.diagnose('@event op test(): void;');
+    it('correctly identifies a model as an event', async () => {
+      const eventName = 'MyTestEvent';
+      const { TestEvent, NotAnEvent } = (await runner.compile(`
+        @event("${eventName}") @test model TestEvent {}
+        @test model NotAnEvent {}
+        `)) as {
+        TestEvent: Model;
+        NotAnEvent: Model;
+      };
+      expect(isEvent(runner.program, TestEvent)).toBe(true);
+      expect(isEvent(runner.program, NotAnEvent)).toBe(false);
+    });
+
+    it('emits diagnostic if not used on a model', async () => {
+      const diagnostics = await runner.diagnose('@event("InvalidEvent") op test(): void;');
       expectDiagnostics(diagnostics, {
         severity: 'error',
         code: 'decorator-wrong-target',

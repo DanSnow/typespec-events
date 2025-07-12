@@ -2,30 +2,34 @@
 
 ## Current Work Focus
 
-Implementing the TypeSpec helper library (`packages/lib`), starting with the `@event` decorator.
+Refining the `@event` decorator in the TypeSpec helper library (`packages/lib`).
 
 ## Recent Changes
 
 - Initial memory bank files created based on provided planning document content.
-- Implemented the `@event` decorator definition in `packages/lib/lib/decorators.tsp`.
-- Implemented the `$event` decorator logic and `isEvent` accessor in `packages/lib/src/decorators.ts`.
-- Added `isEvent` to `StateKeys` in `packages/lib/src/lib.ts`.
-- Updated `packages/lib/src/index.ts` to export `isEvent` and remove `getAlternateName`.
-- Updated `packages/lib/test/decorators.test.ts` with tests for `@event` and removed `alternateName` tests and unused imports.
-- Successfully built the `packages/lib` project after resolving build errors related to removed code and imports.
+- Updated the `@event` decorator definition in `packages/lib/lib/decorators.tsp` to accept a required string literal `name` parameter.
+- Updated the `event` function implementation in `packages/lib/src/decorators.ts` to correctly extract the string value from the string literal argument and store it using the `isEvent` state key.
+- Renamed the previous `isEvent` accessor function to `getEventName` in `packages/lib/src/decorators.ts` to return the stored event name string (`string | undefined`).
+- Created a new boolean `isEvent` function in `packages/lib/src/decorators.ts` to check for the presence of the `@event` decorator.
+- Updated `packages/lib/test/decorators.test.ts` to use `getEventName` and test both the `getEventName` and the new boolean `isEvent` functions.
 
 ## Next Steps
 
-- Present the completed `@event` decorator implementation and successful build to the user.
-- Continue developing the TypeSpec helper library (`packages/lib`) by implementing remaining decorators and helper functions, or begin planning the custom emitter (`packages/emitter`).
+- Update the emitter (`packages/emitter`) to generate Zod schemas for models marked with the `@event` decorator, using the stored event name retrieved via `getEventName`.
+- Address the TypeSpec compiler API usage and import errors encountered during the initial attempt to implement Zod schema generation in `packages/emitter/src/emitter.ts`.
+- Continue developing the custom emitter (`packages/emitter`) to generate code for Go and Rust structs.
 
 ## Active Decisions and Considerations
 
 - The `alternateName` example decorator and its implementation have been removed as requested.
-- The `@event` decorator is currently a simple marker; future iterations may involve adding parameters for event metadata.
+- The `@event` decorator now requires a string name parameter and stores this name using the existing `isEvent` state key.
+- The accessor logic has been split into `isEvent` (boolean) and `getEventName` (string | undefined) for clarity.
 
 ## Learnings and Project Insights
 
 - Successfully navigating TypeSpec decorator implementation involves coordinating changes between `.tsp` definition files and corresponding TypeScript implementation files.
 - Build processes in the monorepo require updating references in related files (like `index.ts` and test files) when code is removed or changed.
+- Implementing emitter logic requires careful attention to TypeSpec compiler API details and correct import paths.
+- Correctly handling TypeSpec literal types (like `StringLiteral`) is crucial when accessing decorator arguments in the implementation.
+- Adhering to naming conventions (e.g., `is` prefix for boolean functions) improves code clarity.
 - The project is progressing according to the plan outlined in `progress.md`.
