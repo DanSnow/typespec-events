@@ -1,0 +1,19 @@
+{
+  "name": "typespec-events",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.12.4",
+  "description": "",
+  "author": "",
+  "keywords": [],
+  "main": "index.js",
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.16.2",
+    "@biomejs/biome": "2.1.1",
+    "@typespec/prettier-plugin-typespec": "^1.1.0",
+    "eslint": "^9.31.0",
+    "lefthook": "^1.12.2",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3",
+    "ultracite": "5.0.32"
+  }
+}
