@@ -17,6 +17,8 @@ tasks:
       - "@typespec/library-linter"
       - "--no-emit"
     toolchain: node
+    deps:
+      - build-ts
   format:
     deps:
       - format-typespec

@@ -1,2 +1,2 @@
-export { getAlternateName } from './decorators.js';
+export { isEvent } from './decorators.js';
 export { $lib } from './lib.js';

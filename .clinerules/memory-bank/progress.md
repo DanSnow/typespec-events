@@ -5,13 +5,14 @@
 - Initial memory bank files (`projectbrief.md`, `productContext.md`, `systemPatterns.md`, `techContext.md`, `activeContext.md`) have been created based on the provided planning document content.
 - The core concept of using TypeSpec for standardized tracking event definitions and code generation is established.
 - The monorepo structure with `packages/lib` and `packages/emitter` is understood.
+- The `@event` decorator has been implemented in `packages/lib`, and the project builds successfully.
 
 ## What's Left to Build
 
 Here is a detailed breakdown of the remaining tasks, incorporating feedback on the role of `packages/lib`:
 
 1.  **Develop TypeSpec Helper Library (`packages/lib`)**:
-    *   Implement TypeSpec decorators and helper functions (e.g., `@event`) within `packages/lib` to facilitate defining tracking events.
+    *   Implement remaining TypeSpec decorators and helper functions within `packages/lib` to facilitate defining tracking events.
     *   Ensure the library provides the necessary tools for users to define their events consistently.
 
 2.  **Develop Custom Emitter Logic (`packages/emitter`)**:

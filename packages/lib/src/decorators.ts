@@ -1,40 +1,26 @@
-import { DecoratorContext, Operation, Program } from '@typespec/compiler';
-import { StateKeys, reportDiagnostic } from './lib.js';
+import type { DecoratorContext, Model, Program } from '@typespec/compiler';
+import { StateKeys } from './lib.js';
 
-export const namespace = 'TypespecEventsX2FLib';
+export const namespace = 'TypespecEvents';
 
 /**
- * __Example implementation of the `@alternateName` decorator.__
+ * Implementation of the `@event` decorator.
+ * Marks a TypeSpec model as a tracking event.
  *
  * @param context Decorator context.
- * @param target Decorator target. Must be an operation.
- * @param name Alternate name.
+ * @param target Decorator target. Must be a model.
  */
-export function $alternateName(
-  context: DecoratorContext,
-  target: Operation,
-  name: string
-) {
-  if (name === 'banned') {
-    reportDiagnostic(context.program, {
-      code: 'banned-alternate-name',
-      target: context.getArgumentTarget(0)!,
-      format: { name },
-    });
-  }
-  context.program.stateMap(StateKeys.alternateName).set(target, name);
+export function $event(context: DecoratorContext, target: Model) {
+  context.program.stateMap(StateKeys.isEvent).set(target, true);
 }
 
 /**
- * __Example accessor for  the `@alternateName` decorator.__
+ * Accessor for the `@event` decorator.
  *
  * @param program TypeSpec program.
- * @param target Decorator target. Must be an operation.
- * @returns Altenate name if provided on the given operation or undefined
+ * @param target Decorator target. Must be a model.
+ * @returns True if the `@event` decorator is applied to the model, false otherwise.
  */
-export function getAlternateName(
-  program: Program,
-  target: Operation
-): string | undefined {
-  return program.stateMap(StateKeys.alternateName).get(target);
+export function isEvent(program: Program, target: Model): boolean {
+  return program.stateMap(StateKeys.isEvent).get(target) === true;
 }

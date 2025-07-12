@@ -2,11 +2,9 @@ import "../dist/src/decorators.js";
 
 using TypeSpec.Reflection;
 
-namespace TypespecEventsX2FLib;
+namespace TypespecEvents;
 
 /**
- * __Example Decorator__
- * Provide an alternate name for an operation.
- * @param name The alternate name.
+ * Marks a TypeSpec model as a tracking event.
  */
-extern dec alternateName(target: Operation, name: valueof string);
+extern dec event(target: Model);

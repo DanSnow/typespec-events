@@ -1,12 +1,8 @@
-import { strictEqual } from 'node:assert';
-import { describe, it, beforeEach } from 'node:test';
-import { Operation } from '@typespec/compiler';
-import {
-  BasicTestRunner,
-  expectDiagnostics,
-  extractCursor,
-} from '@typespec/compiler/testing';
-import { getAlternateName } from '../src/decorators.js';
+import { strictEqual } from 'node:assert/strict';
+import { beforeEach, describe, it } from 'node:test';
+import type { Model } from '@typespec/compiler';
+import { type BasicTestRunner, expectDiagnostics } from '@typespec/compiler/testing';
+import { isEvent } from '../src/decorators.js';
 import { createTypespecEventsX2FLibTestRunner } from './test-host.js';
 
 describe('decorators', () => {
@@ -16,36 +12,18 @@ describe('decorators', () => {
     runner = await createTypespecEventsX2FLibTestRunner();
   });
 
-  describe('@alternateName', () => {
-    it('set alternate name on operation', async () => {
-      const { test } = (await runner.compile(
-        `@alternateName("bar") @test op test(): void;`
-      )) as { test: Operation };
-      strictEqual(getAlternateName(runner.program, test), 'bar');
+  describe('@event', () => {
+    it('set event on model', async () => {
+      const { test } = (await runner.compile('@event @test model TestEvent {}')) as { test: Model };
+      strictEqual(isEvent(runner.program, test), true);
     });
 
-    it('emit diagnostic if not used on an operation', async () => {
-      const diagnostics = await runner.diagnose(
-        `@alternateName("bar") model Test {}`
-      );
+    it('emit diagnostic if not used on a model', async () => {
+      const diagnostics = await runner.diagnose('@event op test(): void;');
       expectDiagnostics(diagnostics, {
         severity: 'error',
         code: 'decorator-wrong-target',
-        message:
-          'Cannot apply @alternateName decorator to Test since it is not assignable to Operation',
-      });
-    });
-
-    it('emit diagnostic if using banned name', async () => {
-      const { pos, source } = extractCursor(
-        `@alternateName(┆"banned") op test(): void;`
-      );
-      const diagnostics = await runner.diagnose(source);
-      expectDiagnostics(diagnostics, {
-        severity: 'error',
-        code: '@typespec-events&#x2F;lib/banned-alternate-name',
-        message: `Banned alternate name "banned".`,
-        pos: pos + runner.autoCodeOffset,
+        message: 'Cannot apply @event decorator to test since it is not assignable to Model',
       });
     });
   });
