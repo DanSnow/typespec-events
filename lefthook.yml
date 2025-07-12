@@ -22,7 +22,7 @@ pre-commit:
   jobs:
     - name: format-ts
       run: pnpm exec moon :format-ts
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: "*.{js,ts,jsx,tsx,json}"
 
     - name: format-tsp
       run: pnpm exec moon :format-tsp
