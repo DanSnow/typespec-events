@@ -38,6 +38,9 @@ importers:
 
   packages/playground:
     dependencies:
+      '@typespec-events/runtime':
+        specifier: workspace:*
+        version: link:../runtime
       '@typespec-events/typespec':
         specifier: workspace:^
         version: link:../typespec

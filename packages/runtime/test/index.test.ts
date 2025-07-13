@@ -74,13 +74,12 @@ describe('defineTracker', () => {
     }).toThrowErrorMatchingInlineSnapshot(`
       [TypespecEventsError: [
         {
-          "code": "invalid_type",
           "expected": "number",
-          "received": "undefined",
+          "code": "invalid_type",
           "path": [
             "timestamp"
           ],
-          "message": "Required"
+          "message": "Invalid input: expected number, received undefined"
         }
       ]]
     `);
