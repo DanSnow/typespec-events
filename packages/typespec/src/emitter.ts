@@ -2,7 +2,7 @@ import { type EmitContext, emitFile, type Model, resolvePath } from '@typespec/c
 import type { LanguageEmitter } from './emitter/framework/emitter-framework.js';
 import { GoEmitter } from './emitter/go-emitter.js';
 import { ZodEmitter } from './emitter/zod-emitter.js';
-import { type EmitterOptions, EmitterOptionsSchema, InternalEmitterOptionsSchema } from './emitter-options.js';
+import { type EmitterOptions, EmitterOptionsSchema } from './emitter-options.js';
 import { StateKeys } from './lib.js';
 
 function collectNonEventModels(eventModels: Map<Model, string>): Set<Model> {
@@ -37,7 +37,7 @@ export async function $onEmit(context: EmitContext<EmitterOptions>) {
   const program = context.program;
   const eventModels = program.stateMap(StateKeys.isEvent) as Map<Model, string>;
 
-  const emitterOptions = InternalEmitterOptionsSchema.parse(context.options);
+  const emitterOptions = EmitterOptionsSchema.parse(context.options);
   const languages = emitterOptions.languages;
 
   // Collect all non-event models

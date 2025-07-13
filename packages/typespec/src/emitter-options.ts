@@ -6,13 +6,6 @@ export const SchemaNamingConventionSchema = z.literal(['camelCase', 'PascalCase'
 
 export const EmitterOptionsSchema = z
   .object({
-    languages: LanguageSchema.optional(),
-    schemaNamingConvention: SchemaNamingConventionSchema.optional(),
-  })
-  .optional();
-
-export const InternalEmitterOptionsSchema = z
-  .object({
     languages: LanguageSchema.default(['zod']),
     schemaNamingConvention: SchemaNamingConventionSchema.default('camelCase'),
   })
@@ -21,8 +14,6 @@ export const InternalEmitterOptionsSchema = z
     schemaNamingConvention: 'camelCase' as const,
   }));
 
-const { $schema: _, ...jsonSchema } = z.toJSONSchema(EmitterOptionsSchema);
+export const EmitterOptionsJsonSchema = z.toJSONSchema(EmitterOptionsSchema, { io: 'input', target: 'draft-7' });
 
-export const EmitterOptionsJsonSchema = jsonSchema;
-
-export type EmitterOptions = z.infer<typeof InternalEmitterOptionsSchema>;
+export type EmitterOptions = z.infer<typeof EmitterOptionsSchema>;
