@@ -49,6 +49,8 @@ Here is a detailed breakdown of the remaining tasks, incorporating feedback on t
 ## Current Status
 
 The `@event` decorator in the merged package (`packages/lib`, now logically `@typespec-events/typespec`) has been successfully updated and tested, including the split accessor functions (`getEventName` and `isEvent`). The package name in `package.json` has been updated. The `typeSpecTypeToZodString` function has been refactored and tested. The `activeContext.md` memory bank file has been successfully updated.
+Implemented BFS algorithm in `$onEmit` to ensure correct schema generation order.
+Added a new test case to `packages/typespec/test/emitter.test.ts` to prevent regressions in schema generation order.
 
 The plan for developing the `@typespec-events/runtime` package and enhancing the `@typespec-events/typespec` emitter based on the `track.ts` consumption pattern has been outlined and documented.
 

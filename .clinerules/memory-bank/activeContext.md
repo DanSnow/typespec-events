@@ -34,6 +34,8 @@ Implementing the `@typespec-events/runtime` package and enhancing the `@typespec
 - **Enhanced the `@typespec-events/typespec` emitter** (`packages/typespec/src/emitter.ts`) to generate a single `events.zod.ts` file containing both Zod schema definitions and an exported `eventSchemas` object mapping snake_case event names to schemas.
 - **Updated integration tests** in `packages/playground/test/integration.test.ts` to verify the content of the combined `events.zod.ts` output and added test cases demonstrating usage with the `@typespec-events/runtime`'s `defineTracker` function.
 - Confirmed successful implementation by running `moon run typespec:test`.
+- Implemented BFS algorithm in `$onEmit` to ensure correct schema generation order.
+- Added a new test case to `packages/typespec/test/emitter.test.ts` to prevent regressions in schema generation order.
 
 ## Next Steps
 

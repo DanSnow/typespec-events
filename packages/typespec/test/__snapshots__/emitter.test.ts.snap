@@ -5,6 +5,7 @@ exports[`emit events.zod.ts with PascalCase 1`] = `
 
 export const CtaClickedSchema = z.object({ title: z.string() });
 
+
 export const eventSchemas = {
   "cta_clicked": CtaClickedSchema,
 } as const;
@@ -16,8 +17,25 @@ exports[`emit events.zod.ts with camelCase (default) 1`] = `
 
 export const ctaClickedSchema = z.object({ title: z.string() });
 
+
 export const eventSchemas = {
   "cta_clicked": ctaClickedSchema,
+} as const;
+"
+`;
+
+exports[`typeSpecTypeToZodString > emit nested models in correct order 1`] = `
+"import { z } from 'zod';
+
+export const citySchema = z.object({ name: z.string(), zip: z.number().int() });
+
+export const addressSchema = z.object({ street: z.string(), city: citySchema });
+
+export const userAddressUpdatedSchema = z.object({ userId: z.string(), address: addressSchema });
+
+
+export const eventSchemas = {
+  "user_address_updated": userAddressUpdatedSchema,
 } as const;
 "
 `;

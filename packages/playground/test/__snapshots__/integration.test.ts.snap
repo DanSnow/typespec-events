@@ -3,13 +3,14 @@
 exports[`Playground Integration Tests > should generate the expected output file 1`] = `
 "import { z } from 'zod';
 
-export const Address = z.object({ street: z.string(), city: z.string(), zipCode: z.string() });
+export const AddressSchema = z.object({ street: z.string(), city: z.string(), zipCode: z.string() });
 
 export const UserSignedUpSchema = z.object({ userId: z.string(), timestamp: z.number().int(), email: z.string() });
 
 export const ProductViewedSchema = z.object({ productId: z.string(), userId: z.string().optional(), timestamp: z.number().int() });
 
-export const UserAddressUpdatedSchema = z.object({ userId: z.string(), oldAddress: Address.optional(), newAddress: Address });
+export const UserAddressUpdatedSchema = z.object({ userId: z.string(), oldAddress: AddressSchema.optional(), newAddress: AddressSchema });
+
 
 export const eventSchemas = {
   "user_signed_up": UserSignedUpSchema,
