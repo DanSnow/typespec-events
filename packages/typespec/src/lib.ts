@@ -1,5 +1,7 @@
-import { type CallableMessage, createTypeSpecLibrary } from '@typespec/compiler';
+import { type CallableMessage, createTypeSpecLibrary, type JSONSchemaType } from '@typespec/compiler';
+import type z from 'zod';
 import { PACKAGE_NAME } from './consts.js';
+import { EmitterOptionsJsonSchema, type EmitterOptionsSchema } from './emitter-options.js';
 
 const reportEventName: CallableMessage<['eventName', 'exampleEventName']> = ({
   eventName,
@@ -27,6 +29,9 @@ export const $lib = createTypeSpecLibrary({
   // Defined state keys for storing metadata in decorator.
   state: {
     isEvent: { description: 'Marks a model as a tracking event' },
+  },
+  emitter: {
+    options: EmitterOptionsJsonSchema as JSONSchemaType<z.infer<typeof EmitterOptionsSchema>>,
   },
 });
 

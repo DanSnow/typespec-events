@@ -18,6 +18,7 @@ import {
   type UnionVariant,
 } from '@typespec/compiler';
 import { camelCase, pascalCase } from 'scule';
+import type { EmitterOptions } from '../emitter-options.js';
 import { StateKeys } from '../lib.js';
 import type { LanguageEmitter } from './framework/emitter-framework.js';
 
@@ -229,16 +230,14 @@ export function typeSpecTypeToZodString(
 
 export class ZodEmitter implements LanguageEmitter {
   private program!: Program;
-  private context!: EmitContext;
+  private context!: EmitContext<EmitterOptions>;
   private namingConvention: 'camelCase' | 'PascalCase' = 'camelCase';
 
-  init(program: Program, context: EmitContext): void {
+  init(program: Program, context: EmitContext<EmitterOptions>): void {
     this.program = program;
     this.context = context;
-    const emitterOptions = context.options as {
-      schemaNamingConvention?: 'camelCase' | 'PascalCase';
-    };
-    this.namingConvention = emitterOptions.schemaNamingConvention ?? 'camelCase';
+    const emitterOptions = context.options;
+    this.namingConvention = emitterOptions.schemaNamingConvention;
   }
 
   emit(models: Model[], eventModels: Map<Model, string>): { path: string; content: string } {

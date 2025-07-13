@@ -2,6 +2,7 @@ import { type EmitContext, emitFile, type Model, resolvePath } from '@typespec/c
 import type { LanguageEmitter } from './emitter/framework/emitter-framework.js';
 import { GoEmitter } from './emitter/go-emitter.js';
 import { ZodEmitter } from './emitter/zod-emitter.js';
+import { type EmitterOptions, EmitterOptionsSchema, InternalEmitterOptionsSchema } from './emitter-options.js';
 import { StateKeys } from './lib.js';
 
 function collectNonEventModels(eventModels: Map<Model, string>): Set<Model> {
@@ -32,15 +33,12 @@ function collectNonEventModels(eventModels: Map<Model, string>): Set<Model> {
   return new Set(reversedNonEventModels);
 }
 
-export async function $onEmit(context: EmitContext) {
+export async function $onEmit(context: EmitContext<EmitterOptions>) {
   const program = context.program;
   const eventModels = program.stateMap(StateKeys.isEvent) as Map<Model, string>;
 
-  const emitterOptions = context.options as {
-    languages?: string[];
-    schemaNamingConvention?: 'camelCase' | 'PascalCase';
-  };
-  const languages = emitterOptions.languages ?? ['zod'];
+  const emitterOptions = InternalEmitterOptionsSchema.parse(context.options);
+  const languages = emitterOptions.languages;
 
   // Collect all non-event models
   const nonEventModels = collectNonEventModels(eventModels);
@@ -54,9 +52,13 @@ export async function $onEmit(context: EmitContext) {
     emitters.push(new GoEmitter());
   }
 
+  const internalContext: EmitContext<EmitterOptions> = {
+    ...context,
+    options: emitterOptions,
+  };
   // Run each emitter
   for (const emitter of emitters) {
-    emitter.init(program, context);
+    emitter.init(program, internalContext);
     const { path, content } = emitter.emit([...Array.from(nonEventModels), ...eventModels.keys()], eventModels);
     await emitFile(program, {
       path: resolvePath(context.emitterOutputDir, path),

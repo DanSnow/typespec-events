@@ -1,5 +1,6 @@
-import type { EmitContext, Model, ModelProperty, Program, Type } from '@typespec/compiler';
+import type { EmitContext, Model, ModelProperty, Program } from '@typespec/compiler';
 import { camelCase, pascalCase } from 'scule';
+import type { EmitterOptions } from '../../emitter-options.js';
 
 /**
  * Represents a definition for a field within a generated struct/object.
@@ -32,7 +33,7 @@ export interface LanguageEmitter {
    * @param program The TypeSpec program.
    * @param context The emitter context.
    */
-  init(program: Program, context: EmitContext): void;
+  init(program: Program, context: EmitContext<EmitterOptions>): void;
 
   /**
    * Maps a TypeSpec model property to a language-specific field definition.
