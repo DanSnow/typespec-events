@@ -1,2 +1,3 @@
-export { isEvent } from './decorators.js';
-export { $lib } from './lib.js';
+export { getEventName, isEvent } from './decorators.js';
+export { $onEmit } from './emitter.js';
+export { $lib, StateKeys } from './lib.js';

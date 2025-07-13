@@ -2,7 +2,7 @@
 
 ## Current Work Focus
 
-Refining the `@event` decorator in the TypeSpec helper library (`packages/lib`).
+Renaming the merged TypeSpec helper library and emitter package.
 
 ## Recent Changes
 
@@ -12,18 +12,24 @@ Refining the `@event` decorator in the TypeSpec helper library (`packages/lib`).
 - Renamed the previous `isEvent` accessor function to `getEventName` in `packages/lib/src/decorators.ts` to return the stored event name string (`string | undefined`).
 - Created a new boolean `isEvent` function in `packages/lib/src/decorators.ts` to check for the presence of the `@event` decorator.
 - Updated `packages/lib/test/decorators.test.ts` to use `getEventName` and test both the `getEventName` and the new boolean `isEvent` functions.
+- Merged the emitter and lib logic into a single package located at `packages/lib`.
+- Renamed the package in `packages/lib/package.json` from `@typespec-events/lib` to `@typespec-events/typespec`.
 
 ## Next Steps
 
-- Update the emitter (`packages/emitter`) to generate Zod schemas for models marked with the `@event` decorator, using the stored event name retrieved via `getEventName`.
-- Address the TypeSpec compiler API usage and import errors encountered during the initial attempt to implement Zod schema generation in `packages/emitter/src/emitter.ts`.
-- Continue developing the custom emitter (`packages/emitter`) to generate code for Go and Rust structs.
+- Update the emitter logic within the `@typespec-events/typespec` package to generate Zod schemas for models marked with the `@event` decorator, using the stored event name retrieved via `getEventName`.
+- Address the TypeSpec compiler API usage and import errors encountered during the initial attempt to implement Zod schema generation in `packages/lib/src/emitter.ts`.
+- Continue developing the custom emitter to generate code for Go and Rust structs within the `@typespec-events/typespec` package.
+- Create a separate `@typespec-events/runtime` package for utility functions related to sending tracking events.
+- Potentially create a helper package for Zod integration if needed.
 
 ## Active Decisions and Considerations
 
 - The `alternateName` example decorator and its implementation have been removed as requested.
 - The `@event` decorator now requires a string name parameter and stores this name using the existing `isEvent` state key.
 - The accessor logic has been split into `isEvent` (boolean) and `getEventName` (string | undefined) for clarity.
+- The emitter and library have been merged into a single package for better integration.
+- The merged package is named `@typespec-events/typespec`.
 
 ## Learnings and Project Insights
 
@@ -33,3 +39,4 @@ Refining the `@event` decorator in the TypeSpec helper library (`packages/lib`).
 - Correctly handling TypeSpec literal types (like `StringLiteral`) is crucial when accessing decorator arguments in the implementation.
 - Adhering to naming conventions (e.g., `is` prefix for boolean functions) improves code clarity.
 - The project is progressing according to the plan outlined in `progress.md`.
+- Merging the emitter and library simplifies the project structure and development workflow.

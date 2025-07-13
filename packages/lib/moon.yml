@@ -56,7 +56,13 @@ tasks:
       - build
   watch:
     command:
-      - tsc
-      - "--watch"
+      - unbuild
+      - --watch
     local: true
+    toolchain: node
+    preset: watcher
+  typecheck:
+    command:
+      - tsc
+      - "--noEmit"
     toolchain: node

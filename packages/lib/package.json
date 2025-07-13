@@ -1,5 +1,5 @@
 {
-  "name": "@typespec-events/lib",
+  "name": "@typespec-events/typespec",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",

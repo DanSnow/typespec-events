@@ -7,6 +7,7 @@
     "@typespec/prettier-plugin-typespec": "^1.1.0",
     "lefthook": "^1.12.2",
     "prettier": "^3.6.2",
+    "publint": "^0.3.12",
     "typescript": "^5.8.3",
     "ultracite": "5.0.32",
     "vitest": "^3.2.4"

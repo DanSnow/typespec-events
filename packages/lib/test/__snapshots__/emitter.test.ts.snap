@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`emit events.zod.ts 1`] = `
+"import { z } from 'zod';
+
+export const cta_clickedSchema = z.object({ title: z.string() });"
+`;
