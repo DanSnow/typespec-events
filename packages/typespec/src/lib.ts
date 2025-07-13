@@ -1,18 +1,33 @@
-import { createTypeSpecLibrary } from '@typespec/compiler';
+import { type CallableMessage, createTypeSpecLibrary } from '@typespec/compiler';
 import { PACKAGE_NAME } from './consts.js';
+
+const reportEventName: CallableMessage<['eventName', 'exampleEventName']> = ({
+  eventName,
+  exampleEventName,
+}: {
+  eventName: string;
+  exampleEventName: string;
+}) => {
+  return `Event name "${eventName}" must be in snake_case (e.g., "${exampleEventName}").`;
+};
+
+reportEventName.keys = ['eventName', 'exampleEventName'] as const;
 
 export const $lib = createTypeSpecLibrary({
   name: PACKAGE_NAME,
   // Define diagnostics for the library. This will provide a typed API to report diagnostic as well as a auto doc generation.
-  diagnostics: {},
+  diagnostics: {
+    'typespec-events-snake-case': {
+      messages: {
+        default: reportEventName,
+      },
+      severity: 'error',
+    },
+  },
   // Defined state keys for storing metadata in decorator.
   state: {
     isEvent: { description: 'Marks a model as a tracking event' },
   },
 });
 
-export const {
-  reportDiagnostic,
-  createDiagnostic,
-  stateKeys: StateKeys,
-} = $lib;
+export const { reportDiagnostic, createDiagnostic, stateKeys: StateKeys } = $lib;

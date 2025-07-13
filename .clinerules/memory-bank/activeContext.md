@@ -2,7 +2,7 @@
 
 ## Current Work Focus
 
-Implementing configurable schema naming conventions in the `@typespec-events/typespec` emitter and adding corresponding tests.
+Implementing the `@typespec-events/runtime` package and enhancing the `@typespec-events/typespec` emitter to support the planned user consumption pattern demonstrated by the `track.ts` file. The current focus is specifically on the Zod and TypeScript related tasks, including enforcing snake_case for event names and combining generated output into a single file.
 
 ## Recent Changes
 
@@ -14,7 +14,7 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Updated `packages/lib/test/decorators.test.ts` to use `getEventName` and test both the `getEventName` and the new boolean `isEvent` functions.
 - Merged the emitter and lib logic into a single package located at `packages/lib`.
 - Renamed the package in `packages/lib/package.json` from `@typespec-events/lib` to `@typespec-events/typespec`.
-- Updated the emitter logic in `packages/typespec/src/emitter.ts` to use `scule` for camelCase/PascalCase transformation of schema names.
+- Updated the emitter logic in `packages/typespec/src/emintter.ts` to use `scule` for camelCase/PascalCase transformation of schema names.
 - Made the schema naming convention configurable via the `schemaNamingConvention` option in the emitter's options.
 - Updated `packages/typespec/test/emitter.test.ts` to include a test case for the PascalCase naming convention.
 - Updated the test snapshot for the PascalCase test case.
@@ -24,13 +24,20 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Fixed the failing scalar types test by removing the non-standard `uuid` type from the test case in `packages/typespec/test/emitter.test.ts`. All tests are now passing.
 - **Created the `packages/playground` package**: Added `package.json`, `main.tsp` (example TypeSpec), `README.md`, `moon.yml` (compile and test tasks), and `tsconfig.json`.
 - **Added an integration test** in `packages/playground/test/integration.test.ts` to verify the content of the generated output file.
+- Reviewed the planned user consumption pattern based on the provided `track.ts` file content.
+- Created the `packages/runtime` package with initial `package.json`, `src/index.ts`, and `test/index.test.ts` files.
+- Implemented the `defineTracker` function in `packages/runtime/src/index.ts` with basic type safety and optional Zod validation.
+- Added initial unit tests for `defineTracker` in `packages/runtime/test/index.test.ts`.
+- Installed `zod` dependency in `packages/runtime`.
+- Added a diagnostic in the `@typespec-events/typespec` decorator implementation to enforce snake_case for `@event` names.
+- Added and successfully ran a test in `packages/typespec/test/decorators.test.ts` for the new snake_case diagnostic.
 
 ## Next Steps
 
-- Compile the playground TypeSpec code and update the integration test with the actual generated output.
-- Ensure the playground integration test passes.
-- Continue developing the custom emitter to generate code for Go and Rust structs within the `@typespec-events/typespec` package.
-- Create a separate `@typespec-events/runtime` package for utility functions related to sending tracking events.
+- Modify the emitter in `@typespec-events/typespec` to combine the generated Zod schemas and the event map into a single `events.zod.ts` file.
+- Ensure the emitter uses the original event name (snake_case) as keys in the generated `eventSchemas` map.
+- Update `packages/playground/main.tsp` to use snake_case event names.
+- Update `packages/playground/test/integration.test.ts` to verify the combined `events.zod.ts` output.
 - Potentially create a helper package for Zod integration if needed.
 
 ## Active Decisions and Considerations
@@ -45,6 +52,11 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Comprehensive tests for `typeSpecTypeToZodString` have been added and are passing.
 - The `playground` package serves as an example of library usage and a location for integration tests that verify emitter output.
 - Integration tests in the playground verify the content of generated files after compilation, rather than programmatically compiling within the test.
+- The plan is to create a dedicated `@typespec-events/runtime` package for the tracking utility functions.
+- The emitter will be responsible for generating the mapping of event names to schemas, which will be consumed by the runtime package.
+- **New Decision**: Combine the generated Zod schemas and the event map into a single `events.zod.ts` file.
+- **New Decision**: Enforce snake_case for `@event` decorator names using a diagnostic.
+- **New Decision**: The `eventSchemas` map keys will use the original snake_case event names.
 
 ## Learnings and Project Insights
 
@@ -61,5 +73,5 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - **Testing TypeSpec compiler interactions**: When testing functions that interact with the TypeSpec compiler (like `typeSpecTypeToZodString`), it is important to compile the TypeSpec code within the test using `compileTypeSpec` and assert on the diagnostics to ensure the TypeSpec code is valid before proceeding with testing the function's output.
 - **Standard TypeSpec library types**: Be aware of the standard types available in the TypeSpec standard library and import them explicitly if needed in test TypeSpec code. Non-standard types will result in compilation errors.
 - **Setting up a new package with Moon tasks**: New packages require a `package.json` and can have their own `moon.yml` to define package-specific tasks (like `compile` and `test`). Dependencies between tasks in different packages can be defined using `deps` with relative paths or workspace names.
-- **Configuring TypeScript for a new package**: A `tsconfig.json` file is needed, often extending the root `tsconfig.json`. Specific compiler options like `module` and `moduleResolution` are important for compatibility with features like `import.meta`.
 - **Writing integration tests that verify generated files**: Integration tests can compile the source code (e.g., TypeSpec) using a Moon task and then use standard file system operations (`node:fs`) to read the generated output files and assert their content. This approach separates the compilation step from the test execution.
+- The `track.ts` file content provided by the user demonstrates the desired consumption pattern for the generated code and runtime library.

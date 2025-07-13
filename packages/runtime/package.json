@@ -1,0 +1,36 @@
+{
+  "name": "@typespec-events/runtime",
+  "version": "0.1.0",
+  "description": "Runtime library for TypeSpec Events",
+  "main": "dist/index.mjs",
+  "type": "module",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "test": "vitest"
+  },
+  "keywords": [
+    "typespec",
+    "events",
+    "runtime",
+    "tracking",
+    "zod"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "unbuild": "^3.5.0",
+    "vitest": "^3.2.4"
+  }
+}

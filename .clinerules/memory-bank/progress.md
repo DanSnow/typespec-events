@@ -11,45 +11,46 @@
 - The tests in `packages/lib/test/decorators.test.ts` have been updated to verify the functionality of both `getEventName` and the new boolean `isEvent` functions. The `packages/lib` project builds successfully.
 - The emitter and lib logic have been merged into a single package located at `packages/lib`.
 - The package in `packages/lib/package.json` has been renamed from `@typespec-events/lib` to `@typespec-events/typespec`.
+- The `typeSpecTypeToZodString` function in `packages/typespec/src/emitter.ts` has been refactored for better maintainability and exported for improved testability. Comprehensive test cases have been added in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types, and the failing scalar types test was fixed by removing the non-standard `uuid` type. All tests related to `typeSpecTypeToZodString` are now passing.
+- The `playground` package serves as an example of library usage and a location for integration tests that verify emitter output.
+- Integration tests in the playground verify the content of generated files after compilation, rather than programmatically compiling within the test.
 
 ## What's Left to Build
 
-Here is a detailed breakdown of the remaining tasks, incorporating feedback on the role of `packages/lib` and the merged package:
+Here is a detailed breakdown of the remaining tasks, incorporating feedback on the role of `packages/lib` and the merged package, and the plan for the runtime and emitter:
 
-1.  **Develop TypeSpec Helper Library (`packages/typespec`)**:
-    *   Implement remaining TypeSpec decorators and helper functions within the merged package (`packages/lib`, now logically `packages/typespec`) to facilitate defining tracking events.
-    *   Ensure the library provides the necessary tools for users to define their events consistently.
+1.  **Develop the `@typespec-events/runtime` package:**
+    *   Create a new package directory `packages/runtime`.
+    *   Add a `package.json` file with necessary dependencies (e.g., Zod).
+    *   Implement the `defineTracker` function in `packages/runtime/src/index.ts`. This function will accept an object with:
+        *   `track`: The user-provided function to send the event (e.g., `analytics.track`).
+        *   `validation`: An optional boolean to enable/disable runtime validation (defaulting to `true`).
+        *   `events`: An object mapping event names (strings) to their corresponding Zod schemas.
+    *   The `defineTracker` function will return a type-safe `track` function. This returned function will take the event name and properties, look up the corresponding schema in the `events` object, perform runtime validation using Zod if `validation` is enabled, and then call the user-provided `track` function with the validated data.
+    *   Add unit tests for the `defineTracker` and the returned `track` function, covering cases with and without validation, correct and incorrect event properties.
 
-2.  **Develop Custom Emitter Logic (`packages/typespec`)**:
-    *   Implement the emitter logic within the merged package (`packages/lib`, now logically `packages/typespec`) to read TypeSpec definitions (which will be defined by users consuming the helper).
-    *   Generate code for TypeScript/Zod schemas based on the TypeSpec definitions, utilizing the event name stored by the `@event` decorator.
-    *   Generate code for Go structs based on the TypeSpec definitions.
-    *   Generate code for Rust structs based on the TypeSpec definitions.
-    *   Ensure the generated code is idiomatic and correct for each target language/framework.
+2.  **Enhance the Emitter in `@typespec-events/typespec`:**
+    *   The emitter currently generates the Zod schema files (e.g., `events.zod.ts`). It needs to also generate the mapping of event names to these schemas.
+    *   Modify the emitter logic in `packages/typespec/src/emitter.ts` to iterate through the TypeSpec models decorated with `@event`.
+    *   For each `@event` decorated model, retrieve the event name using `getEventName` and the generated Zod schema identifier.
+    *   Generate a TypeScript file (e.g., `events.map.ts` or similar) that exports an object containing this mapping (e.g., `{ product_viewed: ProductViewedSchema, user_signed_up: UserSignedUpSchema }`).
+    *   Consider generating a basic `track.ts` file template that imports the necessary components from `@typespec-events/runtime` and the generated schema map, allowing users to easily fill in their specific tracking implementation.
 
-3.  **Create Example Usage and Integration**:
-    *   Create a simple example project that demonstrates how to use the `@typespec-events/typespec` package to define tracking events in TypeSpec.
-    *   Showcase how the emitter within `@typespec-events/typespec` is used to generate code from these definitions.
-    *   Integrate the generated code into simple example frontend and backend application snippets to demonstrate consumption.
+3.  **Update Playground Integration:**
+    *   Update the `packages/playground/main.tsp` to include models decorated with `@event`.
+    *   Configure the playground's `tspconfig.yaml` to use the `@typespec-events/typespec` emitter.
+    *   Update the integration test in `packages/playground/test/integration.test.ts` to verify the generation of both the Zod schema file and the new event map file.
+    *   Add a test case in the integration test to demonstrate using the generated files with the `@typespec-events/runtime` package.
 
-4.  **Implement Comprehensive Testing**:
-    *   Write unit tests for the helper library aspects of `@typespec-events/typespec` to ensure decorators and functions work as expected.
-    *   Write tests for the emitter aspects of `@typespec-events/typespec` to verify that it correctly processes TypeSpec definitions and generates accurate code for all target languages.
-    *   Implement integration tests to ensure the generated code works correctly within example usage scenarios.
+4.  **Continue developing the custom emitter for Go and Rust structs.**
 
-5.  **Create Runtime Package (`@typespec-events/runtime`)**:
-    *   Create a new package `packages/runtime` for utility functions related to sending tracking events.
-
-6.  **Potentially Create Zod Helper Package**:
-    *   Create a separate package if needed for Zod integration helpers.
+5.  **Potentially create a helper package for Zod integration if needed.**
 
 ## Current Status
 
-The `@event` decorator in the merged package (`packages/lib`, now logically `@typespec-events/typespec`) has been successfully updated and tested, including the split accessor functions (`getEventName` and `isEvent`). The package name in `package.json` has been updated.
+The `@event` decorator in the merged package (`packages/lib`, now logically `@typespec-events/typespec`) has been successfully updated and tested, including the split accessor functions (`getEventName` and `isEvent`). The package name in `package.json` has been updated. The `typeSpecTypeToZodString` function has been refactored and tested. The `activeContext.md` memory bank file has been successfully updated.
 
-The `typeSpecTypeToZodString` function in `packages/typespec/src/emitter.ts` has been refactored for better maintainability and exported for improved testability. Comprehensive test cases have been added in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types, and the failing scalar types test was fixed by removing the non-standard `uuid` type. All tests related to `typeSpecTypeToZodString` are now passing.
-
-The next major step is to implement the remaining Zod schema generation logic within the `@typespec-events/typespec` package.
+The plan for developing the `@typespec-events/runtime` package and enhancing the `@typespec-events/typespec` emitter based on the `track.ts` consumption pattern has been outlined and documented.
 
 ## Known Issues
 
@@ -63,3 +64,4 @@ The next major step is to implement the remaining Zod schema generation logic wi
 - Clarified that the merged package (`@typespec-events/typespec`) will contain both the helper library and the emitter logic.
 - The accessor logic for the `@event` decorator was split into `isEvent` (boolean) and `getEventName` (string | undefined) for improved clarity and adherence to naming conventions.
 - Decided to rename the merged package to `@typespec-events/typespec` and plan for separate `@typespec-events/runtime` and potential Zod helper packages.
+- The plan for the `@typespec-events/runtime` package and emitter enhancements was developed based on the desired user consumption pattern shown in the provided `track.ts` file.

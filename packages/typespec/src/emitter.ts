@@ -167,6 +167,7 @@ export async function $onEmit(context: EmitContext) {
   const namingConvention = emitterOptions.schemaNamingConvention ?? 'camelCase'; // Default to camelCase
 
   const zodSchemas: string[] = [];
+  const eventMapEntries: string[] = [];
 
   for (const [model, eventName] of eventModels.entries()) {
     let transformedEventName = eventName;
@@ -179,12 +180,23 @@ export async function $onEmit(context: EmitContext) {
 
     const schemaString = typeSpecTypeToZodString(program, model);
     zodSchemas.push(`export const ${transformedEventName}Schema = ${schemaString};`);
+
+    // Collect mapping entry: original event name -> transformed schema name
+    eventMapEntries.push(`  ${JSON.stringify(eventName)}: ${transformedEventName}Schema,`);
   }
 
-  const fileContent = `import { z } from 'zod';\n\n${zodSchemas.join('\n\n')}`;
+  // Generate the combined Zod schema and event map file content
+  const combinedFileContent = `import { z } from 'zod';
+
+${zodSchemas.join('\n\n')}
+
+export const eventSchemas = {
+${eventMapEntries.join('\n')}
+} as const;
+`;
 
   await emitFile(program, {
     path: resolvePath(context.emitterOutputDir, 'events.zod.ts'),
-    content: fileContent,
+    content: combinedFileContent,
   });
 }

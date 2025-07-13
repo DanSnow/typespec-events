@@ -5,5 +5,10 @@ exports[`Playground Integration Tests > should generate the expected output file
 
 export const UserSignedUpSchema = z.object({ userId: z.string(), timestamp: z.number().int(), email: z.string() });
 
-export const ProductViewedSchema = z.object({ productId: z.string(), userId: z.string().optional(), timestamp: z.number().int() });"
+export const ProductViewedSchema = z.object({ productId: z.string(), userId: z.string().optional(), timestamp: z.number().int() });
+
+export const eventSchemas = {
+  "user_signed_up": UserSignedUpSchema,
+  "product_viewed": ProductViewedSchema,
+} as const;"
 `;

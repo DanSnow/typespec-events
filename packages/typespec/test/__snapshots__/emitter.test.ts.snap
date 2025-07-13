@@ -3,11 +3,21 @@
 exports[`emit events.zod.ts with PascalCase 1`] = `
 "import { z } from 'zod';
 
-export const CtaClickedSchema = z.object({ title: z.string() });"
+export const CtaClickedSchema = z.object({ title: z.string() });
+
+export const eventSchemas = {
+  "cta_clicked": CtaClickedSchema,
+};
+"
 `;
 
 exports[`emit events.zod.ts with camelCase (default) 1`] = `
 "import { z } from 'zod';
 
-export const ctaClickedSchema = z.object({ title: z.string() });"
+export const ctaClickedSchema = z.object({ title: z.string() });
+
+export const eventSchemas = {
+  "cta_clicked": ctaClickedSchema,
+};
+"
 `;
