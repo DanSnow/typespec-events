@@ -2,6 +2,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type Diagnostic, resolvePath } from '@typespec/compiler';
 import { createTestHost, createTestWrapper, expectDiagnosticEmpty } from '@typespec/compiler/testing';
+import { PACKAGE_NAME } from '../src/consts.js';
 import { TypespecEventsTestLibrary } from '../src/testing/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -17,13 +18,13 @@ export async function createTypespecEventsTestRunner() {
   const distDir = resolve(__dirname, '../dist');
 
   // No idea why the dist folder isn't add to test fs
-  await host.addRealFolder('/test/node_modules/@typespec-events/lib/dist', distDir);
+  await host.addRealFolder(`/test/node_modules/${PACKAGE_NAME}/dist`, distDir);
 
   return createTestWrapper(host, {
     autoUsings: ['TypespecEvents'],
     compilerOptions: {
       noEmit: false,
-      emit: ['@typespec-events/lib'],
+      emit: [PACKAGE_NAME],
     },
   });
 }
@@ -33,7 +34,7 @@ export async function emitWithDiagnostics(code: string): Promise<[Record<string,
   await runner.compileAndDiagnose(code, {
     outputDir: 'tsp-output',
   });
-  const emitterOutputDir = './tsp-output/@typespec-events/lib';
+  const emitterOutputDir = `./tsp-output/${PACKAGE_NAME}`;
   const files = await runner.program.host.readDir(emitterOutputDir);
 
   const result: Record<string, string> = {};
