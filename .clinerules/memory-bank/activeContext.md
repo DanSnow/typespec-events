@@ -22,9 +22,13 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Exported the `typeSpecTypeToZodString` function from `packages/typespec/src/emitter.ts` to enable direct testing.
 - Added comprehensive test cases for `typeSpecTypeToZodString` in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types (models, optional properties, nested models, arrays, unions, nullable unions, tuples, literal types, and scalar types).
 - Fixed the failing scalar types test by removing the non-standard `uuid` type from the test case in `packages/typespec/test/emitter.test.ts`. All tests are now passing.
+- **Created the `packages/playground` package**: Added `package.json`, `main.tsp` (example TypeSpec), `README.md`, `moon.yml` (compile and test tasks), and `tsconfig.json`.
+- **Added an integration test** in `packages/playground/test/integration.test.ts` to verify the content of the generated output file.
 
 ## Next Steps
 
+- Compile the playground TypeSpec code and update the integration test with the actual generated output.
+- Ensure the playground integration test passes.
 - Continue developing the custom emitter to generate code for Go and Rust structs within the `@typespec-events/typespec` package.
 - Create a separate `@typespec-events/runtime` package for utility functions related to sending tracking events.
 - Potentially create a helper package for Zod integration if needed.
@@ -39,6 +43,8 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Schema naming in the Zod emitter is now configurable to camelCase (default) or PascalCase.
 - The `typeSpecTypeToZodString` function has been refactored and exported for improved testability.
 - Comprehensive tests for `typeSpecTypeToZodString` have been added and are passing.
+- The `playground` package serves as an example of library usage and a location for integration tests that verify emitter output.
+- Integration tests in the playground verify the content of generated files after compilation, rather than programmatically compiling within the test.
 
 ## Learnings and Project Insights
 
@@ -54,3 +60,6 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - **Reviewing snapshots**: After running tests that modify snapshots, it is important to review the changes in the snapshot file (`test/__snapshots__/emitter.test.ts.snap`) to ensure they match the expected output before committing.
 - **Testing TypeSpec compiler interactions**: When testing functions that interact with the TypeSpec compiler (like `typeSpecTypeToZodString`), it is important to compile the TypeSpec code within the test using `compileTypeSpec` and assert on the diagnostics to ensure the TypeSpec code is valid before proceeding with testing the function's output.
 - **Standard TypeSpec library types**: Be aware of the standard types available in the TypeSpec standard library and import them explicitly if needed in test TypeSpec code. Non-standard types will result in compilation errors.
+- **Setting up a new package with Moon tasks**: New packages require a `package.json` and can have their own `moon.yml` to define package-specific tasks (like `compile` and `test`). Dependencies between tasks in different packages can be defined using `deps` with relative paths or workspace names.
+- **Configuring TypeScript for a new package**: A `tsconfig.json` file is needed, often extending the root `tsconfig.json`. Specific compiler options like `module` and `moduleResolution` are important for compatibility with features like `import.meta`.
+- **Writing integration tests that verify generated files**: Integration tests can compile the source code (e.g., TypeSpec) using a Moon task and then use standard file system operations (`node:fs`) to read the generated output files and assert their content. This approach separates the compilation step from the test execution.
