@@ -1,5 +1,6 @@
 dependsOn:
   - typespec
+  - runtime
 
 tasks:
   build:

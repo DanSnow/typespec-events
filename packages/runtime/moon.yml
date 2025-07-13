@@ -1,0 +1,12 @@
+tasks:
+  build:
+    command: unbuild
+    toolchain: node
+    inputs:
+      - src/**/*
+      - build.config.ts
+    outputs:
+      - dist/**/*
+  test:
+    command: vitest
+    toolchain: node

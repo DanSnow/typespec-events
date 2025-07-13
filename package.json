@@ -13,7 +13,8 @@
     "vitest": "^3.2.4"
   },
   "scripts": {
-    "test": "moon run :build && vitest"
+    "test": "moon run :build && vitest",
+    "build": "moon run :build"
   },
   "description": "",
   "author": "",
