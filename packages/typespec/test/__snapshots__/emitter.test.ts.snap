@@ -1,7 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`emit events.zod.ts 1`] = `
+exports[`emit events.zod.ts with PascalCase 1`] = `
 "import { z } from 'zod';
 
-export const cta_clickedSchema = z.object({ title: z.string() });"
+export const CtaClickedSchema = z.object({ title: z.string() });"
+`;
+
+exports[`emit events.zod.ts with camelCase (default) 1`] = `
+"import { z } from 'zod';
+
+export const ctaClickedSchema = z.object({ title: z.string() });"
 `;

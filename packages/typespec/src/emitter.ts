@@ -11,6 +11,7 @@ import {
   type Type,
   type UnionVariant,
 } from '@typespec/compiler';
+import { camelCase, pascalCase } from 'scule';
 import { StateKeys } from './lib.js';
 
 function typeSpecTypeToZodString(program: Program, type: Type): string {
@@ -29,15 +30,11 @@ function typeSpecTypeToZodString(program: Program, type: Type): string {
   }
   if (type.kind === 'Union') {
     const variants = Array.from(type.variants.values());
-    const nonNullVariants = variants.filter(
-      (v: UnionVariant) => !isNullType(v.type)
-    );
+    const nonNullVariants = variants.filter((v: UnionVariant) => !isNullType(v.type));
     if (nonNullVariants.length === 0) {
       return 'z.null()';
     }
-    const variantZodStrings = nonNullVariants.map((v: UnionVariant) =>
-      typeSpecTypeToZodString(program, v.type)
-    );
+    const variantZodStrings = nonNullVariants.map((v: UnionVariant) => typeSpecTypeToZodString(program, v.type));
     let unionString = `z.union([${variantZodStrings.join(', ')}])`;
 
     const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
@@ -96,9 +93,7 @@ function typeSpecTypeToZodString(program: Program, type: Type): string {
     return 'z.null()';
   }
   if (type.kind === 'Tuple') {
-    const elementZodStrings = type.values.map((v) =>
-      typeSpecTypeToZodString(program, v)
-    );
+    const elementZodStrings = type.values.map((v) => typeSpecTypeToZodString(program, v));
     return `z.tuple([${elementZodStrings.join(', ')}])`;
   }
   if (isNeverType(type)) {
@@ -119,11 +114,24 @@ export async function $onEmit(context: EmitContext) {
   const program = context.program;
   const eventModels = program.stateMap(StateKeys.isEvent) as Map<Model, string>;
 
+  const emitterOptions = context.options as {
+    schemaNamingConvention?: 'camelCase' | 'PascalCase';
+  };
+  const namingConvention = emitterOptions.schemaNamingConvention ?? 'camelCase'; // Default to camelCase
+
   const zodSchemas: string[] = [];
 
   for (const [model, eventName] of eventModels.entries()) {
+    let transformedEventName = eventName;
+    if (namingConvention === 'PascalCase') {
+      transformedEventName = pascalCase(eventName);
+    } else {
+      // default to camelCase
+      transformedEventName = camelCase(eventName);
+    }
+
     const schemaString = typeSpecTypeToZodString(program, model);
-    zodSchemas.push(`export const ${eventName}Schema = ${schemaString};`);
+    zodSchemas.push(`export const ${transformedEventName}Schema = ${schemaString};`);
   }
 
   const fileContent = `import { z } from 'zod';\n\n${zodSchemas.join('\n\n')}`;

@@ -1,11 +1,7 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { type Diagnostic, resolvePath } from '@typespec/compiler';
-import {
-  createTestHost,
-  createTestWrapper,
-  expectDiagnosticEmpty,
-} from '@typespec/compiler/testing';
+import { type CompilerOptions, type Diagnostic, resolvePath } from '@typespec/compiler';
+import { createTestHost, createTestWrapper, expectDiagnosticEmpty } from '@typespec/compiler/testing';
 import { PACKAGE_NAME } from '../src/consts.js';
 import { TypespecEventsTestLibrary } from '../src/testing/index.js';
 
@@ -34,27 +30,46 @@ export async function createTypespecEventsTestRunner() {
 }
 
 export async function emitWithDiagnostics(
-  code: string
+  code: string,
+  compilerOptions?: CompilerOptions,
 ): Promise<[Record<string, string>, readonly Diagnostic[]]> {
   const runner = await createTypespecEventsTestRunner();
-  await runner.compileAndDiagnose(code, {
+  const defaultCompilerOptions: CompilerOptions = {
+    noEmit: false,
+    emit: [PACKAGE_NAME],
     outputDir: 'tsp-output',
-  });
+    options: {}, // Initialize options object
+  };
+  // Merge provided compilerOptions with default compiler options
+  const mergedCompilerOptions: CompilerOptions = {
+    ...defaultCompilerOptions,
+    ...compilerOptions, // Merge top-level compiler options
+    options: {
+      // Merge the options property specifically
+      ...defaultCompilerOptions.options, // Start with default options
+      ...(compilerOptions?.options || {}), // Merge any options provided by the test, including the nested emitter options
+    },
+  };
+
+  // Ensure the emitter is in the 'emit' array if not already
+  if (mergedCompilerOptions.emit && !mergedCompilerOptions.emit.includes(PACKAGE_NAME)) {
+    mergedCompilerOptions.emit.push(PACKAGE_NAME);
+  }
+
+  await runner.compileAndDiagnose(code, mergedCompilerOptions);
   const emitterOutputDir = `./tsp-output/${PACKAGE_NAME}`;
   const files = await runner.program.host.readDir(emitterOutputDir);
 
   const result: Record<string, string> = {};
   for (const file of files) {
     // biome-ignore lint/nursery/noAwaitInLoop: This is for testing
-    result[file] = (
-      await runner.program.host.readFile(resolvePath(emitterOutputDir, file))
-    ).text;
+    result[file] = (await runner.program.host.readFile(resolvePath(emitterOutputDir, file))).text;
   }
   return [result, runner.program.diagnostics];
 }
 
-export async function emit(code: string): Promise<Record<string, string>> {
-  const [result, diagnostics] = await emitWithDiagnostics(code);
+export async function emit(code: string, compilerOptions?: CompilerOptions): Promise<Record<string, string>> {
+  const [result, diagnostics] = await emitWithDiagnostics(code, compilerOptions);
   expectDiagnosticEmpty(diagnostics);
   return result;
 }

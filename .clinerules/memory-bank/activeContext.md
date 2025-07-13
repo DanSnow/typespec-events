@@ -2,7 +2,7 @@
 
 ## Current Work Focus
 
-Renaming the merged TypeSpec helper library and emitter package.
+Implementing configurable schema naming conventions in the `@typespec-events/typespec` emitter and adding corresponding tests.
 
 ## Recent Changes
 
@@ -14,11 +14,13 @@ Renaming the merged TypeSpec helper library and emitter package.
 - Updated `packages/lib/test/decorators.test.ts` to use `getEventName` and test both the `getEventName` and the new boolean `isEvent` functions.
 - Merged the emitter and lib logic into a single package located at `packages/lib`.
 - Renamed the package in `packages/lib/package.json` from `@typespec-events/lib` to `@typespec-events/typespec`.
+- Updated the emitter logic in `packages/typespec/src/emitter.ts` to use `scule` for camelCase/PascalCase transformation of schema names.
+- Made the schema naming convention configurable via the `schemaNamingConvention` option in the emitter's options.
+- Updated `packages/typespec/test/emitter.test.ts` to include a test case for the PascalCase naming convention.
+- Updated the test snapshot for the PascalCase test case.
 
 ## Next Steps
 
-- Update the emitter logic within the `@typespec-events/typespec` package to generate Zod schemas for models marked with the `@event` decorator, using the stored event name retrieved via `getEventName`.
-- Address the TypeSpec compiler API usage and import errors encountered during the initial attempt to implement Zod schema generation in `packages/lib/src/emitter.ts`.
 - Continue developing the custom emitter to generate code for Go and Rust structs within the `@typespec-events/typespec` package.
 - Create a separate `@typespec-events/runtime` package for utility functions related to sending tracking events.
 - Potentially create a helper package for Zod integration if needed.
@@ -30,6 +32,7 @@ Renaming the merged TypeSpec helper library and emitter package.
 - The accessor logic has been split into `isEvent` (boolean) and `getEventName` (string | undefined) for clarity.
 - The emitter and library have been merged into a single package for better integration.
 - The merged package is named `@typespec-events/typespec`.
+- Schema naming in the Zod emitter is now configurable to camelCase (default) or PascalCase.
 
 ## Learnings and Project Insights
 
@@ -40,3 +43,6 @@ Renaming the merged TypeSpec helper library and emitter package.
 - Adhering to naming conventions (e.g., `is` prefix for boolean functions) improves code clarity.
 - The project is progressing according to the plan outlined in `progress.md`.
 - Merging the emitter and library simplifies the project structure and development workflow.
+- **Passing emitter options in tests**: Emitter-specific options are passed within the `options` property of the `CompilerOptions` object provided to the test runner's `compileAndDiagnose` function. These options are then available in the emitter's `EmitContext.options`.
+- **Running tests with Moon**: Tests are run using `moon run typespec:test`. To update snapshots, the command `moon run typespec:test -- --update` is used. The `--` is necessary to pass arguments (`--update`) to the underlying test runner (Vitest) via Moon.
+- **Reviewing snapshots**: After running tests that modify snapshots, it is important to review the changes in the snapshot file (`test/__snapshots__/emitter.test.ts.snap`) to ensure they match the expected output before committing.
