@@ -1,0 +1,19 @@
+dependsOn:
+  - typespec
+
+tasks:
+  build:
+    command:
+      - tsp
+      - compile
+      - "."
+    toolchain: node
+    inputs:
+      - "**/*.tsp"
+    deps:
+      - ^:build
+  test:
+    command: vitest
+    toolchain: node
+    deps:
+      - build

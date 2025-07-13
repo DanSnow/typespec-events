@@ -1,0 +1,20 @@
+{
+  "name": "@typespec-events/playground",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Example usage of the @typespec-events/typespec library",
+  "type": "module",
+  "scripts": {
+    "build": "tsp compile ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@typespec-events/typespec": "workspace:^",
+    "zod": "^4.0.5"
+  },
+  "peerDependencies": {
+    "@typespec/compiler": "^1.1.0"
+  }
+}

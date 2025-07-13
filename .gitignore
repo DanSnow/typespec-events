@@ -3,3 +3,10 @@ node_modules
 # moon
 .moon/cache
 .moon/docker
+
+# MacOS
+.DS_Store
+
+# Default TypeSpec output
+tsp-output/
+dist/

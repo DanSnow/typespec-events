@@ -36,6 +36,18 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.0.13)(jiti@2.4.2)(yaml@2.7.1)
 
+  packages/playground:
+    dependencies:
+      '@typespec-events/typespec':
+        specifier: workspace:^
+        version: link:../typespec
+      '@typespec/compiler':
+        specifier: ^1.1.0
+        version: 1.1.0(@types/node@24.0.13)
+      zod:
+        specifier: ^4.0.5
+        version: 4.0.5
+
   packages/typespec:
     dependencies:
       scule:
@@ -1758,6 +1770,9 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
+  zod@4.0.5:
+    resolution: {integrity: sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA==}
+
   zx@8.7.0:
     resolution: {integrity: sha512-pArftqj5JV/er8p+czFZwF+k6SbCldl7kcfCR+rIiDIh3gUsLB0F3Xh05diP8PzToZ39D/GWeFoVFimjHQkbAg==}
     engines: {node: '>= 12.17.0'}
@@ -3324,5 +3339,7 @@ snapshots:
       yargs-parser: 21.1.1
 
   yoctocolors-cjs@2.1.2: {}
+
+  zod@4.0.5: {}
 
   zx@8.7.0: {}
