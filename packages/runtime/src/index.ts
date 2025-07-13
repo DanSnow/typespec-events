@@ -1,11 +1,11 @@
-import type { ZodIssue, ZodType, z } from 'zod';
+import type { ZodIssue, ZodObject, z } from 'zod';
 
 interface TypespecEventsErrorInput {
   code: 'invalid_event_name' | 'invalid_event_properties';
   message: string;
   eventName: string;
   eventProperties: Record<string, unknown>;
-  schema?: ZodType;
+  schema?: ZodObject;
   issues?: ZodIssue[];
 }
 
@@ -13,7 +13,7 @@ export class TypespecEventsError extends Error {
   code: TypespecEventsErrorInput['code'];
   eventName: string;
   eventProperties: Record<string, unknown>;
-  schema?: ZodType;
+  schema?: ZodObject;
   issues?: ZodIssue[];
 
   constructor(input: TypespecEventsErrorInput) {
@@ -30,7 +30,7 @@ export class TypespecEventsError extends Error {
 
 // Define the type for the events map
 interface EventSchemas {
-  [eventName: string]: ZodType;
+  [eventName: string]: ZodObject;
 }
 
 // Define the type for the user-provided track function

@@ -22,7 +22,7 @@ pre-commit:
   jobs:
     - name: format-ts
       run: pnpm exec moon :format-ts
-      glob: "*.{js,ts,jsx,tsx,json}"
+      glob: "*.{js,ts,jsx,tsx,json,mjs}"
       stage_fixed: true
 
     - name: format-tsp

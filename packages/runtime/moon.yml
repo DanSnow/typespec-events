@@ -10,3 +10,14 @@ tasks:
   test:
     command: vitest
     toolchain: node
+  format:
+    deps:
+      - format-ts
+    options:
+      runDepsInParallel: true
+  format-ts:
+    command:
+      - biome
+      - format
+      - --write
+    toolchain: node

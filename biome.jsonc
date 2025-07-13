@@ -1,8 +1,9 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
   "extends": ["ultracite"],
   "formatter": {
     "indentWidth": 2,
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "lineWidth": 120
   }
 }

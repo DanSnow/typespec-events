@@ -27,11 +27,11 @@ tasks:
       - build-ts
   format:
     deps:
-      - format-typespec
+      - format-tsp
       - format-ts
     options:
       runDepsInParallel: true
-  format-typespec:
+  format-tsp:
     command:
       - prettier
       - "./**/*.tsp"

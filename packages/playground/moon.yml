@@ -20,3 +20,21 @@ tasks:
     toolchain: node
     deps:
       - build
+  format:
+    deps:
+      - format-tsp
+      - format-ts
+    options:
+      runDepsInParallel: true
+  format-tsp:
+    command:
+      - prettier
+      - "./**/*.tsp"
+      - "--write"
+    toolchain: node
+  format-ts:
+    command:
+      - biome
+      - format
+      - --write
+    toolchain: node
