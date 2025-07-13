@@ -18,6 +18,10 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - Made the schema naming convention configurable via the `schemaNamingConvention` option in the emitter's options.
 - Updated `packages/typespec/test/emitter.test.ts` to include a test case for the PascalCase naming convention.
 - Updated the test snapshot for the PascalCase test case.
+- Refactored the `typeSpecTypeToZodString` function in `packages/typespec/src/emitter.ts` for better maintainability by extracting logic into helper functions.
+- Exported the `typeSpecTypeToZodString` function from `packages/typespec/src/emitter.ts` to enable direct testing.
+- Added comprehensive test cases for `typeSpecTypeToZodString` in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types (models, optional properties, nested models, arrays, unions, nullable unions, tuples, literal types, and scalar types).
+- Fixed the failing scalar types test by removing the non-standard `uuid` type from the test case in `packages/typespec/test/emitter.test.ts`. All tests are now passing.
 
 ## Next Steps
 
@@ -33,6 +37,8 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - The emitter and library have been merged into a single package for better integration.
 - The merged package is named `@typespec-events/typespec`.
 - Schema naming in the Zod emitter is now configurable to camelCase (default) or PascalCase.
+- The `typeSpecTypeToZodString` function has been refactored and exported for improved testability.
+- Comprehensive tests for `typeSpecTypeToZodString` have been added and are passing.
 
 ## Learnings and Project Insights
 
@@ -46,3 +52,5 @@ Implementing configurable schema naming conventions in the `@typespec-events/typ
 - **Passing emitter options in tests**: Emitter-specific options are passed within the `options` property of the `CompilerOptions` object provided to the test runner's `compileAndDiagnose` function. These options are then available in the emitter's `EmitContext.options`.
 - **Running tests with Moon**: Tests are run using `moon run typespec:test`. To update snapshots, the command `moon run typespec:test -- --update` is used. The `--` is necessary to pass arguments (`--update`) to the underlying test runner (Vitest) via Moon.
 - **Reviewing snapshots**: After running tests that modify snapshots, it is important to review the changes in the snapshot file (`test/__snapshots__/emitter.test.ts.snap`) to ensure they match the expected output before committing.
+- **Testing TypeSpec compiler interactions**: When testing functions that interact with the TypeSpec compiler (like `typeSpecTypeToZodString`), it is important to compile the TypeSpec code within the test using `compileTypeSpec` and assert on the diagnostics to ensure the TypeSpec code is valid before proceeding with testing the function's output.
+- **Standard TypeSpec library types**: Be aware of the standard types available in the TypeSpec standard library and import them explicitly if needed in test TypeSpec code. Non-standard types will result in compilation errors.

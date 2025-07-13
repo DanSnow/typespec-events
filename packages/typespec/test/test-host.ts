@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { type CompilerOptions, type Diagnostic, resolvePath } from '@typespec/compiler';
+import { type CompilerOptions, type Diagnostic, type Program, resolvePath } from '@typespec/compiler';
 import { createTestHost, createTestWrapper, expectDiagnosticEmpty } from '@typespec/compiler/testing';
 import { PACKAGE_NAME } from '../src/consts.js';
 import { TypespecEventsTestLibrary } from '../src/testing/index.js';
@@ -27,6 +27,18 @@ export async function createTypespecEventsTestRunner() {
       emit: [PACKAGE_NAME],
     },
   });
+}
+
+export function assertDefined<T>(value: T | undefined | null): asserts value is T {
+  if (value === undefined || value === null) {
+    throw new Error('Expected value to be defined');
+  }
+}
+
+export async function compileTypeSpec(code: string): Promise<{ program: Program; diagnostics: readonly Diagnostic[] }> {
+  const runner = await createTypespecEventsTestRunner();
+  await runner.compileAndDiagnose(code);
+  return { program: runner.program, diagnostics: runner.program.diagnostics };
 }
 
 export async function emitWithDiagnostics(

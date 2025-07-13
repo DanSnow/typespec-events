@@ -45,7 +45,11 @@ Here is a detailed breakdown of the remaining tasks, incorporating feedback on t
 
 ## Current Status
 
-The `@event` decorator in the merged package (`packages/lib`, now logically `@typespec-events/typespec`) has been successfully updated and tested, including the split accessor functions (`getEventName` and `isEvent`). The package name in `package.json` has been updated. The next major step is to implement the Zod schema generation logic within the `@typespec-events/typespec` package.
+The `@event` decorator in the merged package (`packages/lib`, now logically `@typespec-events/typespec`) has been successfully updated and tested, including the split accessor functions (`getEventName` and `isEvent`). The package name in `package.json` has been updated.
+
+The `typeSpecTypeToZodString` function in `packages/typespec/src/emitter.ts` has been refactored for better maintainability and exported for improved testability. Comprehensive test cases have been added in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types, and the failing scalar types test was fixed by removing the non-standard `uuid` type. All tests related to `typeSpecTypeToZodString` are now passing.
+
+The next major step is to implement the remaining Zod schema generation logic within the `@typespec-events/typespec` package.
 
 ## Known Issues
 
