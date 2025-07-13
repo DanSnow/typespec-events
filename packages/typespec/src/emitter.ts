@@ -22,36 +22,20 @@ import {
 import { camelCase, pascalCase } from 'scule';
 import { StateKeys } from './lib.js';
 
-function handleModelType(program: Program, type_: Type): string {
-  const type = type_ as Model;
-  const properties = type.properties;
-  const props: string[] = [];
-  for (const prop of properties.values()) {
-    const isOptional = prop.optional;
-    let propZodString = typeSpecTypeToZodString(program, prop.type);
-    if (isOptional) {
-      propZodString += '.optional()';
+// New function to get the schema name for a given TypeSpec type
+function getSchemaName(program: Program, type: Type, namingConvention: 'camelCase' | 'PascalCase'): string | undefined {
+  if (type.kind === 'Model') {
+    // Check if it's an event model
+    const eventName = program.stateMap(StateKeys.isEvent).get(type);
+    if (eventName) {
+      // It's an event model, use its transformed name
+      return namingConvention === 'PascalCase' ? pascalCase(eventName) : camelCase(eventName);
     }
-    props.push(`${prop.name}: ${propZodString}`);
+    // It's a non-event model, use its own name transformed
+    return namingConvention === 'PascalCase' ? pascalCase(type.name) : camelCase(type.name);
   }
-  return `z.object({ ${props.join(', ')} })`;
-}
-
-function handleUnionType(program: Program, type_: Type): string {
-  const type = type_ as Union;
-  const variants = Array.from(type.variants.values());
-  const nonNullVariants = variants.filter((v: UnionVariant) => !isNullType(v.type));
-  if (nonNullVariants.length === 0) {
-    return 'z.null()';
-  }
-  const variantZodStrings = nonNullVariants.map((v: UnionVariant) => typeSpecTypeToZodString(program, v.type));
-  let unionString = `z.union([${variantZodStrings.join(', ')}])`;
-
-  const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
-  if (includesNull) {
-    unionString += '.nullable()';
-  }
-  return unionString;
+  // Return undefined for types that don't have a dedicated schema name
+  return;
 }
 
 function handleScalarType(_program: Program, type_: Type): string {
@@ -103,23 +87,87 @@ function handleNumberType(_program: Program, type_: Type): string {
 
 function handleBooleanType(_program: Program, type_: Type): string {
   const type = type_ as BooleanLiteral;
-  return `z.literal(${type.value})`; // Cast to any to access value
+  return `z.literal(${type.value})`;
 }
 
-function handleTupleType(program: Program, type_: Type): string {
+function handleTupleType(
+  program: Program,
+  type_: Type,
+  namingConvention: 'camelCase' | 'PascalCase',
+  generatedSchemas: Map<string, string>,
+): string {
   const type = type_ as Tuple;
-  const elementZodStrings = type.values.map((v: Type) => typeSpecTypeToZodString(program, v)); // Cast to any to access values
+  const elementZodStrings = type.values.map((v: Type) =>
+    typeSpecTypeToZodString(program, v, namingConvention, generatedSchemas),
+  );
   return `z.tuple([${elementZodStrings.join(', ')}])`;
 }
 
-function handleArrayType(program: Program, type_: Type): string {
-  const type = type_ as ArrayModelType; // We know it's a Model because isArrayModel checked it
-  const elementType = type.indexer.value; // We know 'value' exists because isArrayModel checked it
-  const elementZodString = typeSpecTypeToZodString(program, elementType);
+function handleArrayType(
+  program: Program,
+  type_: Type,
+  namingConvention: 'camelCase' | 'PascalCase',
+  generatedSchemas: Map<string, string>,
+): string {
+  const type = type_ as ArrayModelType;
+  const elementType = type.indexer.value;
+  const elementZodString = typeSpecTypeToZodString(program, elementType, namingConvention, generatedSchemas);
   return `z.array(${elementZodString})`;
 }
 
-const typeHandlers: Map<string, (program: Program, type: Type) => string> = new Map([
+function handleModelType(
+  program: Program,
+  type_: Type,
+  namingConvention: 'camelCase' | 'PascalCase',
+  generatedSchemas: Map<string, string>,
+): string {
+  const type = type_ as Model;
+  const properties = type.properties;
+  const props: string[] = [];
+  for (const prop of properties.values()) {
+    const isOptional = prop.optional;
+    let propZodString = typeSpecTypeToZodString(program, prop.type, namingConvention, generatedSchemas);
+    if (isOptional) {
+      propZodString += '.optional()';
+    }
+    props.push(`${prop.name}: ${propZodString}`);
+  }
+  return `z.object({ ${props.join(', ')} })`;
+}
+
+function handleUnionType(
+  program: Program,
+  type_: Type,
+  namingConvention: 'camelCase' | 'PascalCase',
+  generatedSchemas: Map<string, string>,
+): string {
+  const type = type_ as Union;
+  const variants = Array.from(type.variants.values());
+  const nonNullVariants = variants.filter((v: UnionVariant) => !isNullType(v.type));
+  if (nonNullVariants.length === 0) {
+    return 'z.null()';
+  }
+  const variantZodStrings = nonNullVariants.map((v: UnionVariant) =>
+    typeSpecTypeToZodString(program, v.type, namingConvention, generatedSchemas),
+  );
+  let unionString = `z.union([${variantZodStrings.join(', ')}])`;
+
+  const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
+  if (includesNull) {
+    unionString += '.nullable()';
+  }
+  return unionString;
+}
+
+const typeHandlers: Map<
+  string,
+  (
+    program: Program,
+    type: Type,
+    namingConvention: 'camelCase' | 'PascalCase',
+    generatedSchemas: Map<string, string>,
+  ) => string
+> = new Map([
   ['Model', handleModelType],
   ['Union', handleUnionType],
   ['Scalar', handleScalarType],
@@ -129,7 +177,12 @@ const typeHandlers: Map<string, (program: Program, type: Type) => string> = new 
   ['Tuple', handleTupleType],
 ]);
 
-export function typeSpecTypeToZodString(program: Program, type: Type): string {
+export function typeSpecTypeToZodString(
+  program: Program,
+  type: Type,
+  namingConvention: 'camelCase' | 'PascalCase',
+  generatedSchemas: Map<string, string>,
+): string {
   if (isNullType(type)) {
     return 'z.null()';
   }
@@ -145,12 +198,20 @@ export function typeSpecTypeToZodString(program: Program, type: Type): string {
 
   // Handle arrays before general models
   if (type.kind === 'Model' && isArrayModelType(program, type)) {
-    return handleArrayType(program, type);
+    return handleArrayType(program, type, namingConvention, generatedSchemas);
+  }
+
+  // Check if this model has already been generated as a separate schema
+  if (type.kind === 'Model') {
+    const schemaName = getSchemaName(program, type, namingConvention);
+    if (schemaName && generatedSchemas.has(schemaName)) {
+      return schemaName; // Return the schema name instead of generating inline
+    }
   }
 
   const handler = typeHandlers.get(type.kind);
   if (handler) {
-    return handler(program, type);
+    return handler(program, type, namingConvention, generatedSchemas);
   }
 
   // Fallback for unhandled types
@@ -166,9 +227,25 @@ export async function $onEmit(context: EmitContext) {
   };
   const namingConvention = emitterOptions.schemaNamingConvention ?? 'camelCase'; // Default to camelCase
 
-  const zodSchemas: string[] = [];
+  const generatedSchemas = new Map<string, string>(); // Map to store generated schemas for non-event models
+
+  // First pass: Identify and generate schemas for non-event models used within event models
+  for (const model of eventModels.keys()) {
+    for (const prop of model.properties.values()) {
+      if (prop.type.kind === 'Model' && !eventModels.has(prop.type)) {
+        const schemaName = getSchemaName(program, prop.type, namingConvention);
+        if (schemaName && !generatedSchemas.has(schemaName)) {
+          const schemaString = handleModelType(program, prop.type, namingConvention, generatedSchemas); // Recursively handle nested models
+          generatedSchemas.set(schemaName, `export const ${schemaName} = ${schemaString};`);
+        }
+      }
+    }
+  }
+
+  const eventSchemas: string[] = [];
   const eventMapEntries: string[] = [];
 
+  // Second pass: Generate schemas for event models and the event map
   for (const [model, eventName] of eventModels.entries()) {
     let transformedEventName = eventName;
     if (namingConvention === 'PascalCase') {
@@ -178,17 +255,21 @@ export async function $onEmit(context: EmitContext) {
       transformedEventName = camelCase(eventName);
     }
 
-    const schemaString = typeSpecTypeToZodString(program, model);
-    zodSchemas.push(`export const ${transformedEventName}Schema = ${schemaString};`);
+    // Use the modified typeSpecTypeToZodString which will reference generatedSchemas
+    const schemaString = typeSpecTypeToZodString(program, model, namingConvention, generatedSchemas);
+    eventSchemas.push(`export const ${transformedEventName}Schema = ${schemaString};`);
 
     // Collect mapping entry: original event name -> transformed schema name
     eventMapEntries.push(`  ${JSON.stringify(eventName)}: ${transformedEventName}Schema,`);
   }
 
+  // Combine all generated schemas (nested models + event models)
+  const allSchemas = Array.from(generatedSchemas.values()).concat(eventSchemas);
+
   // Generate the combined Zod schema and event map file content
   const combinedFileContent = `import { z } from 'zod';
 
-${zodSchemas.join('\n\n')}
+${allSchemas.join('\n\n')}
 
 export const eventSchemas = {
 ${eventMapEntries.join('\n')}

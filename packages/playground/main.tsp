@@ -15,3 +15,16 @@ model ProductViewedEvent {
   userId?: string;
   timestamp: int64;
 }
+
+model Address {
+  street: string;
+  city: string;
+  zipCode: string;
+}
+
+@event("user_address_updated")
+model UserAddressUpdatedEvent {
+  userId: string;
+  oldAddress?: Address;
+  newAddress: Address;
+}
