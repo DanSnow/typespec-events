@@ -43,7 +43,7 @@ export async function compileTypeSpec(code: string): Promise<{ program: Program;
 
 export async function emitWithDiagnostics(
   code: string,
-  compilerOptions?: CompilerOptions,
+  compilerOptions?: CompilerOptions
 ): Promise<[Record<string, string>, readonly Diagnostic[]]> {
   const runner = await createTypespecEventsTestRunner();
   const defaultCompilerOptions: CompilerOptions = {

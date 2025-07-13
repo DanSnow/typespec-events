@@ -34,7 +34,7 @@ describe('typeSpecTypeToZodString', () => {
     const model = program.resolveTypeReference('OptionalModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ name: z.string().optional(), age: z.number().int().optional() })',
+      'z.object({ name: z.string().optional(), age: z.number().int().optional() })'
     );
   });
 
@@ -47,7 +47,7 @@ describe('typeSpecTypeToZodString', () => {
     const userModel = program.resolveTypeReference('User')[0];
     assertDefined(userModel);
     expect(typeSpecTypeToZodString(program, userModel)).toBe(
-      'z.object({ name: z.string(), address: z.object({ street: z.string(), city: z.string() }) })',
+      'z.object({ name: z.string(), address: z.object({ street: z.string(), city: z.string() }) })'
     );
   });
 
@@ -57,7 +57,7 @@ describe('typeSpecTypeToZodString', () => {
     const model = program.resolveTypeReference('ArrayModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ names: z.array(z.string()), ages: z.array(z.number().int()) })',
+      'z.object({ names: z.array(z.string()), ages: z.array(z.number().int()) })'
     );
   });
 
@@ -78,19 +78,19 @@ describe('typeSpecTypeToZodString', () => {
     const model = program.resolveTypeReference('UnionModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ value: z.union([z.string(), z.number().int(), z.boolean()]) })',
+      'z.object({ value: z.union([z.string(), z.number().int(), z.boolean()]) })'
     );
   });
 
   it('should handle nullable unions', async () => {
     const { program, diagnostics } = await compileTypeSpec(
-      'model NullableUnionModel { value: string | null | integer }',
+      'model NullableUnionModel { value: string | null | integer }'
     );
     expect(diagnostics.length).toBe(0);
     const model = program.resolveTypeReference('NullableUnionModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ value: z.union([z.string(), z.number().int()]).nullable() })',
+      'z.object({ value: z.union([z.string(), z.number().int()]).nullable() })'
     );
   });
 
@@ -100,31 +100,31 @@ describe('typeSpecTypeToZodString', () => {
     const model = program.resolveTypeReference('TupleModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ coords: z.tuple([z.string(), z.number().int(), z.boolean()]) })',
+      'z.object({ coords: z.tuple([z.string(), z.number().int(), z.boolean()]) })'
     );
   });
 
   it('should handle literal types', async () => {
     const { program, diagnostics } = await compileTypeSpec(
-      `model LiteralModel { status: "success" | "failure", code: 200 | 500, enabled: true }`,
+      `model LiteralModel { status: "success" | "failure", code: 200 | 500, enabled: true }`
     );
     expect(diagnostics.length).toBe(0);
     const model = program.resolveTypeReference('LiteralModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ status: z.union([z.literal("success"), z.literal("failure")]), code: z.union([z.literal(200), z.literal(500)]), enabled: z.literal(true) })',
+      'z.object({ status: z.union([z.literal("success"), z.literal("failure")]), code: z.union([z.literal(200), z.literal(500)]), enabled: z.literal(true) })'
     );
   });
 
   it('should handle various scalar types', async () => {
     const { program, diagnostics } = await compileTypeSpec(
-      'model ScalarModel { s: string, i: integer, f: float32, b: boolean, d: plainDate, u: url }',
+      'model ScalarModel { s: string, i: integer, f: float32, b: boolean, d: plainDate, u: url }'
     );
     expect(diagnostics.length).toBe(0);
     const model = program.resolveTypeReference('ScalarModel')[0];
     assertDefined(model);
     expect(typeSpecTypeToZodString(program, model)).toBe(
-      'z.object({ s: z.string(), i: z.number().int(), f: z.number(), b: z.boolean(), d: z.string(), u: z.string().url() })',
+      'z.object({ s: z.string(), i: z.number().int(), f: z.number(), b: z.boolean(), d: z.string(), u: z.string().url() })'
     );
   });
 });
