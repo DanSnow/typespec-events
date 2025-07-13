@@ -5,7 +5,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'My Docs',
+      title: 'Typespec Events',
+      description: 'Standardize and Improve Tracking Event Management',
       social: [
         {
           icon: 'github',
@@ -17,8 +18,12 @@ export default defineConfig({
         {
           label: 'Guides',
           items: [
-            // Each item here is one entry in the navigation menu.
-            { label: 'Example Guide', slug: 'guides/example' },
+            { label: 'Getting Started', slug: 'guides/getting-started' },
+            { label: 'Concepts', slug: 'guides/concepts' },
+            { label: 'Defining Complex Schemas', slug: 'guides/defining-complex-schemas' },
+            { label: 'Emitter Options', slug: 'guides/emitter-options' },
+            { label: 'Integration Examples', slug: 'guides/integration-examples' },
+            { label: 'Contributing', slug: 'guides/contributing' },
           ],
         },
         {

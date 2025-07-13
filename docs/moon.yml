@@ -1,0 +1,12 @@
+tasks:
+  build:
+    command:
+      - astro
+      - build
+    toolchain: node
+  dev:
+    command:
+      - astro
+      - dev
+    local: true
+    toolchain: node
