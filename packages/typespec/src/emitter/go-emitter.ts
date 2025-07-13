@@ -1,3 +1,5 @@
+// This file contains the Go emitter logic.
+
 import {
   type ArrayModelType,
   type BooleanLiteral,
@@ -22,29 +24,33 @@ import { StateKeys } from '../lib.js';
 import type { LanguageEmitter } from './framework/emitter-framework.js';
 
 // New function to get the schema name for a given TypeSpec type
-function getSchemaName(program: Program, type: Type, namingConvention: 'camelCase' | 'PascalCase'): string | undefined {
+function getStructName(
+  program: Program,
+  type: Type,
+  _namingConvention: 'camelCase' | 'PascalCase',
+): string | undefined {
   if (type.kind === 'Model') {
     // Check if it's an event model
     const eventName = program.stateMap(StateKeys.isEvent).get(type);
     if (eventName) {
       // It's an event model, use its transformed name
-      return `${namingConvention === 'PascalCase' ? pascalCase(eventName) : camelCase(eventName)}Schema`;
+      return pascalCase(eventName);
     }
     // It's a non-event model, use its own name transformed
-    return `${namingConvention === 'PascalCase' ? pascalCase(type.name) : camelCase(type.name)}Schema`;
+    return pascalCase(type.name);
   }
   // Return undefined for types that don't have a dedicated schema name
   return;
 }
 
-// Export the getSchemaName function
-export { getSchemaName };
+// Export the getStructName function
+export { getStructName };
 
 function handleScalarType(_program: Program, type_: Type): string {
   const type = type_ as Scalar;
   switch (type.name) {
     case 'string':
-      return 'z.string()';
+      return 'string';
     case 'int8':
     case 'int16':
     case 'int32':
@@ -54,42 +60,42 @@ function handleScalarType(_program: Program, type_: Type): string {
     case 'uint32':
     case 'uint64':
     case 'integer':
-      return 'z.number().int()';
+      return 'int';
     case 'float32':
     case 'float64':
     case 'decimal':
     case 'decimal128':
     case 'number':
-      return 'z.number()';
+      return 'float64';
     case 'boolean':
-      return 'z.boolean()';
+      return 'bool';
     case 'plainDate':
     case 'plainTime':
     case 'utcDateTime':
     case 'offsetDateTime':
     case 'duration':
     case 'bytes':
-      return 'z.string()';
+      return 'string';
     case 'url':
-      return 'z.string().url()';
+      return 'string';
     default:
-      return 'z.unknown()';
+      return 'interface{}';
   }
 }
 
 function handleStringType(_program: Program, type_: Type): string {
   const type = type_ as StringLiteral;
-  return `z.literal("${type.value}")`;
+  return `"${type.value}"`;
 }
 
 function handleNumberType(_program: Program, type_: Type): string {
   const type = type_ as NumericLiteral;
-  return `z.literal(${type.value})`;
+  return `${type.value}`;
 }
 
 function handleBooleanType(_program: Program, type_: Type): string {
   const type = type_ as BooleanLiteral;
-  return `z.literal(${type.value})`;
+  return `${type.value}`;
 }
 
 function handleTupleType(
@@ -99,10 +105,10 @@ function handleTupleType(
   generatedSchemas: Map<string, string>,
 ): string {
   const type = type_ as Tuple;
-  const elementZodStrings = type.values.map((v: Type) =>
-    typeSpecTypeToZodString(program, v, namingConvention, generatedSchemas),
+  const elementGoStrings = type.values.map((v: Type) =>
+    typeSpecTypeToGoString(program, v, namingConvention, generatedSchemas),
   );
-  return `z.tuple([${elementZodStrings.join(', ')}])`;
+  return `[${elementGoStrings.length}]interface{}{${elementGoStrings.join(', ')}}`;
 }
 
 function handleArrayType(
@@ -113,8 +119,8 @@ function handleArrayType(
 ): string {
   const type = type_ as ArrayModelType;
   const elementType = type.indexer.value;
-  const elementZodString = typeSpecTypeToZodString(program, elementType, namingConvention, generatedSchemas);
-  return `z.array(${elementZodString})`;
+  const elementGoString = typeSpecTypeToGoString(program, elementType, namingConvention, generatedSchemas);
+  return `[]${elementGoString}`;
 }
 
 function handleModelType(
@@ -126,22 +132,22 @@ function handleModelType(
   const type = type_ as Model;
 
   // Check if this model has already been generated as a separate schema
-  const schemaName = getSchemaName(program, type, namingConvention);
-  if (schemaName && generatedSchemas.has(schemaName)) {
-    return schemaName;
+  const structName = getStructName(program, type, namingConvention);
+  if (structName && generatedSchemas.has(structName)) {
+    return structName;
   }
 
   const properties = type.properties;
-  const props: string[] = [];
+  const fields: string[] = [];
   for (const prop of properties.values()) {
     const isOptional = prop.optional;
-    let propZodString = typeSpecTypeToZodString(program, prop.type, namingConvention, generatedSchemas);
+    let propGoString = typeSpecTypeToGoString(program, prop.type, namingConvention, generatedSchemas);
     if (isOptional) {
-      propZodString += '.optional()';
+      propGoString = `*${propGoString}`;
     }
-    props.push(`${prop.name}: ${propZodString}`);
+    fields.push(`${pascalCase(prop.name)} ${propGoString} \`json:"${camelCase(prop.name)}"\``);
   }
-  return `z.object({ ${props.join(', ')} })`;
+  return `struct { ${fields.join('; ')} }`;
 }
 
 function handleUnionType(
@@ -154,18 +160,18 @@ function handleUnionType(
   const variants = Array.from(type.variants.values());
   const nonNullVariants = variants.filter((v: UnionVariant) => !isNullType(v.type));
   if (nonNullVariants.length === 0) {
-    return 'z.null()';
+    return 'nil';
   }
-  const variantZodStrings = nonNullVariants.map((v: UnionVariant) =>
-    typeSpecTypeToZodString(program, v.type, namingConvention, generatedSchemas),
+  const variantGoStrings = nonNullVariants.map((v: UnionVariant) =>
+    typeSpecTypeToGoString(program, v.type, namingConvention, generatedSchemas),
   );
-  let unionString = `z.union([${variantZodStrings.join(', ')}])`;
+  return `interface{}{${variantGoStrings.join(', ')}}`;
 
-  const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
-  if (includesNull) {
-    unionString += '.nullable()';
-  }
-  return unionString;
+  // const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
+  // if (includesNull) {
+  //   unionString += '.nullable()';
+  // }
+  // return unionString;
 }
 
 const typeHandlers: Map<
@@ -186,23 +192,23 @@ const typeHandlers: Map<
   ['Tuple', handleTupleType],
 ]);
 
-export function typeSpecTypeToZodString(
+export function typeSpecTypeToGoString(
   program: Program,
   type: Type,
   namingConvention: 'camelCase' | 'PascalCase',
   generatedSchemas: Map<string, string>,
 ): string {
   if (isNullType(type)) {
-    return 'z.null()';
+    return 'nil';
   }
   if (isNeverType(type)) {
-    return 'z.never()';
+    return 'interface{}';
   }
   if (isUnknownType(type)) {
-    return 'z.unknown()';
+    return 'interface{}';
   }
   if (isVoidType(type)) {
-    return 'z.void()';
+    return 'interface{}';
   }
 
   // Handle arrays before general models
@@ -212,9 +218,9 @@ export function typeSpecTypeToZodString(
 
   // Check if this model has already been generated as a separate schema
   if (type.kind === 'Model') {
-    const schemaName = getSchemaName(program, type, namingConvention);
-    if (schemaName && generatedSchemas.has(schemaName)) {
-      return schemaName; // Return the schema name instead of generating inline
+    const structName = getStructName(program, type, namingConvention);
+    if (structName && generatedSchemas.has(structName)) {
+      return structName; // Return the schema name instead of generating inline
     }
   }
 
@@ -224,10 +230,10 @@ export function typeSpecTypeToZodString(
   }
 
   // Fallback for unhandled types
-  return 'z.unknown()';
+  return 'interface{}';
 }
 
-export class ZodEmitter implements LanguageEmitter {
+export class GoEmitter implements LanguageEmitter {
   private program!: Program;
   private context!: EmitContext;
   private namingConvention: 'camelCase' | 'PascalCase' = 'camelCase';
@@ -244,54 +250,53 @@ export class ZodEmitter implements LanguageEmitter {
   emit(models: Model[], eventModels: Map<Model, string>): { path: string; content: string } {
     const generatedSchemas = new Map<string, string>();
     const eventMapEntries: string[] = [];
+    const structDefinitions: string[] = [];
 
-    // Generate schemas for all models
+    // Generate struct definitions for all models
     for (const model of models) {
-      this.emitModel(model, generatedSchemas);
+      this.emitModel(model, generatedSchemas, structDefinitions);
     }
 
     // Generate event map entries
     for (const [model, eventName] of eventModels.entries()) {
-      const schemaName = getSchemaName(this.program, model, this.namingConvention);
+      const schemaName = getStructName(this.program, model, this.namingConvention);
       if (schemaName) {
         eventMapEntries.push(`  ${JSON.stringify(eventName)}: ${schemaName},`);
       }
     }
 
     // Combine all generated schemas
-    const allSchemas = Array.from(generatedSchemas.values());
-
-    // Generate the combined Zod schema and event map file content
-    const combinedFileContent = `import { z } from 'zod';\n
-${allSchemas.join('\n\n')}
-\n\nexport const eventSchemas = {
+    // Generate the combined Go file content
+    const combinedFileContent = `package main\n\n
+${structDefinitions.join('\n\n')}
+\n\n// Event Schemas\nvar EventSchemas = map[string]interface{}{
 ${eventMapEntries.join('\n')}
-} as const;
-`;
+}`;
 
     return {
-      path: 'events.zod.ts',
+      path: 'events.go',
       content: combinedFileContent,
     };
   }
 
-  private emitModel(model: Model, generatedSchemas: Map<string, string>) {
+  private emitModel(model: Model, generatedSchemas: Map<string, string>, structDefinitions: string[]) {
     const properties = model.properties;
-    const props: string[] = [];
+    const fields: string[] = [];
     for (const prop of properties.values()) {
       const isOptional = prop.optional;
-      let propZodString = typeSpecTypeToZodString(this.program, prop.type, this.namingConvention, generatedSchemas);
+      let propGoString = typeSpecTypeToGoString(this.program, prop.type, this.namingConvention, generatedSchemas);
       if (isOptional) {
-        propZodString += '.optional()';
+        propGoString = `*${propGoString}`;
       }
-      props.push(`${prop.name}: ${propZodString}`);
+      fields.push(`${pascalCase(prop.name)} ${propGoString} \`json:"${camelCase(prop.name)}"\``);
     }
-    const schemaString = `z.object({ ${props.join(', ')} })`;
+    const structString = `type ${pascalCase(model.name)} struct { ${fields.join('; ')} }`;
 
     // Get the schema name and add to generated schemas
-    const schemaName = getSchemaName(this.program, model, this.namingConvention);
-    if (schemaName) {
-      generatedSchemas.set(schemaName, `export const ${schemaName} = ${schemaString};`);
+    const structName = getStructName(this.program, model, this.namingConvention);
+    if (structName) {
+      generatedSchemas.set(structName, structString);
+      structDefinitions.push(structString);
     }
   }
 }

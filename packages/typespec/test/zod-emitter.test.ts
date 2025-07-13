@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { PACKAGE_NAME } from '../src/consts.js';
-import { typeSpecTypeToZodString } from '../src/emitter/zod-emitter.js'; // Corrected import path
+import { typeSpecTypeToZodString } from '../src/emitter/zod-emitter.js';
 import { assertDefined, compileTypeSpec, emit } from './test-host.js';
 
 it('emit events.zod.ts with camelCase (default)', async () => {

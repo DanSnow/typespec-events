@@ -39,52 +39,13 @@ export interface LanguageEmitter {
    * @param property The TypeSpec model property.
    * @returns The language-specific field definition.
    */
-  mapPropertyToField(property: ModelProperty): FieldDefinition;
-
   /**
    * Emits the code for a language-specific struct definition based on a TypeSpec model.
-   * @param model The TypeSpec model.
-   * @param structDef The generated struct definition.
-   * The generated code should be added to the emitter's internal map of generated schemas.
+   * @param models All TypeSpec models.
+   * @param eventModels The TypeSpec event models.
+   * @returns The path and content of the generated file.
    */
-  emitStruct(model: Model, structDef: StructDefinition): void;
-
-  /**
-   * Generates the header content for the output file (e.g., package declaration, imports).
-   * @returns The header content string.
-   */
-  getFileHeader(): string;
-
-  /**
-   * Generates the footer content for the output file (e.g., closing brackets, helper functions).
-   * @param eventMapEntries An array of strings representing the entries for the event map.
-   * @returns The footer content string.
-   */
-  getFileFooter(eventMapEntries: string[]): string;
-
-  /**
-   * Maps a TypeSpec type to a language-specific type string.
-   * @param type The TypeSpec type.
-   * @returns The language-specific type string.
-   */
-  mapTypeToLanguageType(type: Type): string;
-
-  // Add methods for handling other TypeSpec types if needed (enums, unions, etc.)
-  // mapScalarToLanguageType(scalar: Scalar): string;
-  // mapEnumToLanguageType(enumType: Enum): string;
-  // mapUnionToLanguageType(unionType: Union): string;
-  // mapTupleToLanguageType(tupleType: Tuple): string;
-  // mapLiteralToLanguageType(literal: StringLiteral | NumericLiteral | BooleanLiteral): string;
-  // mapIntrinsicToLanguageType(intrinsic: IntrinsicType): string;
-  // mapArrayToLanguageType(array: ArrayModelType): string;
-  // mapOperationToLanguageType(operation: Operation): string;
-
-  /**
-   * Gets the map of generated schemas from the language-specific emitter.
-   * This is used by the main emitter to collect all generated schemas.
-   * @returns A map where keys are schema names and values are the generated code strings.
-   */
-  getGeneratedSchemas(): Map<string, string>;
+  emit(models: Model[], eventModels: Map<Model, string>): { path: string; content: string };
 }
 
 // Helper function to determine if a property is optional

@@ -1,6 +1,7 @@
 import { type EmitContext, emitFile, type Model, resolvePath } from '@typespec/compiler';
-import type { LanguageEmitter, StructDefinition } from './emitter/framework/emitter-framework.js';
-import { getSchemaName, ZodEmitter } from './emitter/zod-emitter.js'; // Import getSchemaName
+import type { LanguageEmitter } from './emitter/framework/emitter-framework.js';
+import { GoEmitter } from './emitter/go-emitter.js';
+import { ZodEmitter } from './emitter/zod-emitter.js';
 import { StateKeys } from './lib.js';
 
 function collectNonEventModels(eventModels: Map<Model, string>): Set<Model> {
@@ -35,63 +36,31 @@ export async function $onEmit(context: EmitContext) {
   const program = context.program;
   const eventModels = program.stateMap(StateKeys.isEvent) as Map<Model, string>;
 
-  // Determine which emitter to use based on options (for now, only Zod)
-  // In the future, we would check context.options for a target language
-  const emitter: LanguageEmitter = new ZodEmitter();
-  emitter.init(program, context);
-
-  const generatedSchemas = emitter.getGeneratedSchemas();
-
-  const eventMapEntries: string[] = [];
-
   const emitterOptions = context.options as {
+    languages?: string[];
     schemaNamingConvention?: 'camelCase' | 'PascalCase';
   };
-  const namingConvention = emitterOptions.schemaNamingConvention ?? 'camelCase';
+  const languages = emitterOptions.languages ?? ['zod'];
 
-  // Collect all non-event models using BFS
+  // Collect all non-event models
   const nonEventModels = collectNonEventModels(eventModels);
 
-  // Emit schemas for all non-event models
-  for (const model of nonEventModels) {
-    const structDef: StructDefinition = {
-      name: model.name,
-      fields: Array.from(model.properties.values()).map((prop) => emitter.mapPropertyToField(prop)),
-    };
-    emitter.emitStruct(model, structDef);
+  // Create instances of the specified emitters
+  const emitters: LanguageEmitter[] = [];
+  if (languages.includes('zod')) {
+    emitters.push(new ZodEmitter());
+  }
+  if (languages.includes('go')) {
+    emitters.push(new GoEmitter());
   }
 
-  // Collect all event models
-  const eventModelsToEmit = new Set<Model>(eventModels.keys());
-
-  // Emit schemas for all event models
-  for (const model of eventModelsToEmit) {
-    const structDef: StructDefinition = {
-      name: model.name,
-      fields: Array.from(model.properties.values()).map((prop) => emitter.mapPropertyToField(prop)),
-    };
-    emitter.emitStruct(model, structDef);
+  // Run each emitter
+  for (const emitter of emitters) {
+    emitter.init(program, context);
+    const { path, content } = emitter.emit([...Array.from(nonEventModels), ...eventModels.keys()], eventModels);
+    await emitFile(program, {
+      path: resolvePath(context.emitterOutputDir, path),
+      content,
+    });
   }
-
-  // Generate event map entries
-  for (const [model, eventName] of eventModels.entries()) {
-    const schemaName = getSchemaName(program, model, namingConvention);
-    if (schemaName) {
-      eventMapEntries.push(`  ${JSON.stringify(eventName)}: ${schemaName},`);
-    }
-  }
-
-  // Combine all generated schemas from the emitter
-  const allSchemas = Array.from(generatedSchemas.values());
-
-  // Generate the combined Zod schema and event map file content
-  const combinedFileContent = `${emitter.getFileHeader()}
-${allSchemas.join('\n\n')}
-${emitter.getFileFooter(eventMapEntries)}
-`;
-
-  await emitFile(program, {
-    path: resolvePath(context.emitterOutputDir, 'events.zod.ts'),
-    content: combinedFileContent,
-  });
 }

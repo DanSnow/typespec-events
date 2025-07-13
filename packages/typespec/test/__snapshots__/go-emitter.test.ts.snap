@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`go emitter > emit events.go with PascalCase 1`] = `
+"package main
+
+
+type CtaClicked struct { Title string \`json:"title"\` }
+
+
+// Event Schemas
+var EventSchemas = map[string]interface{}{
+  "cta_clicked": CtaClicked,
+}"
+`;
+
+exports[`go emitter > emit events.go with camelCase (default) 1`] = `
+"package main
+
+
+type CtaClicked struct { Title string \`json:"title"\` }
+
+
+// Event Schemas
+var EventSchemas = map[string]interface{}{
+  "cta_clicked": CtaClicked,
+}"
+`;
+
+exports[`go emitter > emit nested models in correct order 1`] = `
+"package main
+
+
+type City struct { Name string \`json:"name"\`; Zip int \`json:"zip"\` }
+
+type Address struct { Street string \`json:"street"\`; City City \`json:"city"\` }
+
+type UserAddressUpdated struct { UserId string \`json:"userId"\`; Address Address \`json:"address"\` }
+
+
+// Event Schemas
+var EventSchemas = map[string]interface{}{
+  "user_address_updated": UserAddressUpdated,
+}"
+`;
