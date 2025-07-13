@@ -31,13 +31,14 @@ Implementing the `@typespec-events/runtime` package and enhancing the `@typespec
 - Installed `zod` dependency in `packages/runtime`.
 - Added a diagnostic in the `@typespec-events/typespec` decorator implementation to enforce snake_case for `@event` names.
 - Added and successfully ran a test in `packages/typespec/test/decorators.test.ts` for the new snake_case diagnostic.
+- **Enhanced the `@typespec-events/typespec` emitter** (`packages/typespec/src/emitter.ts`) to generate a single `events.zod.ts` file containing both Zod schema definitions and an exported `eventSchemas` object mapping snake_case event names to schemas.
+- **Updated integration tests** in `packages/playground/test/integration.test.ts` to verify the content of the combined `events.zod.ts` output and added test cases demonstrating usage with the `@typespec-events/runtime`'s `defineTracker` function.
+- Confirmed successful implementation by running `moon run typespec:test`.
 
 ## Next Steps
 
-- Modify the emitter in `@typespec-events/typespec` to combine the generated Zod schemas and the event map into a single `events.zod.ts` file.
-- Ensure the emitter uses the original event name (snake_case) as keys in the generated `eventSchemas` map.
 - Update `packages/playground/main.tsp` to use snake_case event names.
-- Update `packages/playground/test/integration.test.ts` to verify the combined `events.zod.ts` output.
+- Continue developing the custom emitter for Go and Rust structs.
 - Potentially create a helper package for Zod integration if needed.
 
 ## Active Decisions and Considerations
@@ -75,3 +76,6 @@ Implementing the `@typespec-events/runtime` package and enhancing the `@typespec
 - **Setting up a new package with Moon tasks**: New packages require a `package.json` and can have their own `moon.yml` to define package-specific tasks (like `compile` and `test`). Dependencies between tasks in different packages can be defined using `deps` with relative paths or workspace names.
 - **Writing integration tests that verify generated files**: Integration tests can compile the source code (e.g., TypeSpec) using a Moon task and then use standard file system operations (`node:fs`) to read the generated output files and assert their content. This approach separates the compilation step from the test execution.
 - The `track.ts` file content provided by the user demonstrates the desired consumption pattern for the generated code and runtime library.
+- **Decision Confirmed**: The `@typespec-events/typespec` emitter now generates a single `events.zod.ts` file with both schemas and the `eventSchemas` map.
+- **Decision Confirmed**: The `eventSchemas` map keys use the original snake_case event names.
+- **Decision Confirmed**: Integration tests in `packages/playground` have been updated to verify the combined output and runtime usage.
