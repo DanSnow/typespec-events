@@ -23,7 +23,9 @@ pre-commit:
     - name: format-ts
       run: pnpm exec moon :format-ts
       glob: "*.{js,ts,jsx,tsx,json}"
+      stage_fixed: true
 
     - name: format-tsp
       run: pnpm exec moon :format-tsp
       glob: "*.tsp"
+      stage_fixed: true

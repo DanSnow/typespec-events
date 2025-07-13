@@ -29,11 +29,15 @@ function typeSpecTypeToZodString(program: Program, type: Type): string {
   }
   if (type.kind === 'Union') {
     const variants = Array.from(type.variants.values());
-    const nonNullVariants = variants.filter((v: UnionVariant) => !isNullType(v.type));
+    const nonNullVariants = variants.filter(
+      (v: UnionVariant) => !isNullType(v.type)
+    );
     if (nonNullVariants.length === 0) {
       return 'z.null()';
     }
-    const variantZodStrings = nonNullVariants.map((v: UnionVariant) => typeSpecTypeToZodString(program, v.type));
+    const variantZodStrings = nonNullVariants.map((v: UnionVariant) =>
+      typeSpecTypeToZodString(program, v.type)
+    );
     let unionString = `z.union([${variantZodStrings.join(', ')}])`;
 
     const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
@@ -92,7 +96,9 @@ function typeSpecTypeToZodString(program: Program, type: Type): string {
     return 'z.null()';
   }
   if (type.kind === 'Tuple') {
-    const elementZodStrings = type.values.map((v) => typeSpecTypeToZodString(program, v));
+    const elementZodStrings = type.values.map((v) =>
+      typeSpecTypeToZodString(program, v)
+    );
     return `z.tuple([${elementZodStrings.join(', ')}])`;
   }
   if (isNeverType(type)) {

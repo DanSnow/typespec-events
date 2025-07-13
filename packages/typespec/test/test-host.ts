@@ -1,7 +1,11 @@
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type Diagnostic, resolvePath } from '@typespec/compiler';
-import { createTestHost, createTestWrapper, expectDiagnosticEmpty } from '@typespec/compiler/testing';
+import {
+  createTestHost,
+  createTestWrapper,
+  expectDiagnosticEmpty,
+} from '@typespec/compiler/testing';
 import { PACKAGE_NAME } from '../src/consts.js';
 import { TypespecEventsTestLibrary } from '../src/testing/index.js';
 
@@ -29,7 +33,9 @@ export async function createTypespecEventsTestRunner() {
   });
 }
 
-export async function emitWithDiagnostics(code: string): Promise<[Record<string, string>, readonly Diagnostic[]]> {
+export async function emitWithDiagnostics(
+  code: string
+): Promise<[Record<string, string>, readonly Diagnostic[]]> {
   const runner = await createTypespecEventsTestRunner();
   await runner.compileAndDiagnose(code, {
     outputDir: 'tsp-output',
@@ -40,7 +46,9 @@ export async function emitWithDiagnostics(code: string): Promise<[Record<string,
   const result: Record<string, string> = {};
   for (const file of files) {
     // biome-ignore lint/nursery/noAwaitInLoop: This is for testing
-    result[file] = (await runner.program.host.readFile(resolvePath(emitterOutputDir, file))).text;
+    result[file] = (
+      await runner.program.host.readFile(resolvePath(emitterOutputDir, file))
+    ).text;
   }
   return [result, runner.program.diagnostics];
 }
