@@ -1,5 +1,7 @@
 packages:
   - packages/*
+  - docs
 
 onlyBuiltDependencies:
-  - "@moonrepo/cli"
+  - '@moonrepo/cli'
+  - sharp
