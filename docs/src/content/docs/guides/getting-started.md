@@ -45,8 +45,8 @@ model UserSignedUpEvent {
 model ProductAddedToCartEvent {
   productId: string;
   productName: string;
-  quantity: int;
-  price: float;
+  quantity: int32;
+  price: float32;
 }
 ```
 
@@ -66,6 +66,8 @@ options:
     # output-dir: ./generated
     # Configure schema naming convention (optional, defaults to camelCase)
     # schemaNamingConvention: PascalCase
+    # Choose the emitter (zod or go)
+    languages: [zod]
 ```
 
 Now, run the TypeSpec compiler. If your main `.tsp` file is `events.tsp`, you can run:
@@ -74,7 +76,7 @@ Now, run the TypeSpec compiler. If your main `.tsp` file is `events.tsp`, you ca
 tsp compile events.tsp --emit=@typespec-events/typespec
 ```
 
-This will generate a single file (by default `tsp-output/events.zod.ts`) containing the Zod schemas for your events and an `eventSchemas` object mapping the snake_case event names to their corresponding schemas.
+This will generate a single file (by default `tsp-output/@typespec-events/events.zod.ts`) containing the Zod schemas for your events and an `eventSchemas` object mapping the snake_case event names to their corresponding schemas.
 
 ```ts
 // Example of generated events.zod.ts (content will vary based on your .tsp)
@@ -130,7 +132,7 @@ track('user_signed_up', { userId: 'abc-123', timestamp: new Date().toISOString()
 // track('unknown_event', { data: '...' }); // Type error
 ```
 
-The `defineTracker` function returns a `track` function that provides type hints based on your TypeSpec definitions and can perform runtime validation using Zod before calling your actual tracking implementation.
+The `defineTracker` function returns a `track` function that provides type hints based on your TypeSpec definitions and can perform runtime validation using Standard Schema before calling your actual tracking implementation.
 
 You have now successfully set up `typespec-events`, defined an event, generated code, and integrated it with the runtime!
 

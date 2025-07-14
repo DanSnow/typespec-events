@@ -9,7 +9,7 @@ hero:
       icon: right-arrow
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
 
 # Standardize Your Tracking Events with TypeSpec
 
@@ -39,7 +39,7 @@ model ProductViewedEvent {
 This TypeSpec definition can generate code like Zod schemas for TypeScript:
 
 ```ts
-import { z } from 'zod';
+import { z } from "zod";
 
 export const ProductViewedEventSchema = z.object({
   productId: z.string(),
@@ -56,8 +56,8 @@ export const eventSchemas = {
 And runtime utilities to use these schemas:
 
 ```ts
-import { defineTracker } from '@typespec-events/runtime';
-import { eventSchemas } from './events.zod'; // Generated file
+import { defineTracker } from "@typespec-events/runtime";
+import { eventSchemas } from "./events.zod"; // Generated file
 
 const track = defineTracker({
   track: (eventName, properties) => {
@@ -68,7 +68,29 @@ const track = defineTracker({
 });
 
 // Example usage:
-track('product_viewed', { productId: '123', productName: 'Awesome Gadget' });
+track("product_viewed", { productId: "123", productName: "Awesome Gadget" });
+```
+
+## Multi-Language Support (Experiment)
+
+`typespec-events` also supports generating code for other languages, like Go:
+
+```go
+// Generated events.go
+package main
+
+type ProductViewedEvent struct {
+	ProductId   string `json:"productId"`
+	ProductName string `json:"productName"`
+	Category    *string `json:"category"`
+}
+
+// ... other structs
+
+var EventSchemas = map[string]interface{}{
+	"product_viewed": ProductViewedEvent{},
+	// ... other events
+}
 ```
 
 ## Get Started
@@ -84,6 +106,9 @@ Ready to standardize your event tracking?
   </Card>
   <Card title="Code Generation" icon="document">
     Generate type-safe code from your definitions.
+  </Card>
+  <Card title="Go Emitter" icon="rocket">
+    Learn how to generate Go code. (Experiment)
   </Card>
 </CardGrid>
 
