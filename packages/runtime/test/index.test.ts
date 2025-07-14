@@ -70,19 +70,9 @@ describe('defineTracker', () => {
 
     const invalidEvent = { productId: '1', userId: '1' }; // Missing timestamp
     expect(() => {
+      // @ts-expect-error missing property
       tracker('product_viewed', invalidEvent);
-    }).toThrowErrorMatchingInlineSnapshot(`
-      [TypespecEventsError: [
-        {
-          "expected": "number",
-          "code": "invalid_type",
-          "path": [
-            "timestamp"
-          ],
-          "message": "Invalid input: expected number, received undefined"
-        }
-      ]]
-    `);
+    }).toThrowErrorMatchingInlineSnapshot('[TypespecEventsError: Invalid properties]');
 
     expect(mockTrack).not.toBeCalled();
   });
@@ -97,6 +87,7 @@ describe('defineTracker', () => {
     });
 
     const invalidEvent = { productId: '1', userId: '1' }; // Missing timestamp
+    // @ts-expect-error missing property
     tracker('product_viewed', invalidEvent);
 
     expect(mockTrack).toHaveBeenCalledWith('product_viewed', invalidEvent);
@@ -114,6 +105,7 @@ describe('defineTracker', () => {
     const unknownEventName = 'unknown_event';
     const eventProperties = { foo: 'bar' };
     expect(() => {
+      // @ts-expect-error invalid event
       tracker(unknownEventName as string, eventProperties); // Cast to string to bypass type checking for test
     }).toThrowErrorMatchingInlineSnapshot(`[TypespecEventsError: Event "unknown_event" not found]`);
 

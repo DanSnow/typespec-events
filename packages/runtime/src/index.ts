@@ -1,22 +1,27 @@
-import type { ZodIssue, ZodObject, z } from 'zod';
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 
-interface TypespecEventsErrorInput {
+// biome-ignore lint/suspicious/noExplicitAny: This is for properties
+type Properties = Record<string, any>;
+// biome-ignore lint/suspicious/noExplicitAny: This is for properties
+type PropertiesSchema = StandardSchemaV1<Record<string, any>>;
+
+interface TypespecEventsErrorInput<Schema extends PropertiesSchema> {
   code: 'invalid_event_name' | 'invalid_event_properties';
   message: string;
   eventName: string;
-  eventProperties: Record<string, unknown>;
-  schema?: ZodObject;
-  issues?: ZodIssue[];
+  eventProperties: Properties;
+  schema?: Schema;
+  issues?: readonly StandardSchemaV1.Issue[];
 }
 
-export class TypespecEventsError extends Error {
-  code: TypespecEventsErrorInput['code'];
+export class TypespecEventsError<Schema extends PropertiesSchema> extends Error {
+  code: TypespecEventsErrorInput<Schema>['code'];
   eventName: string;
   eventProperties: Record<string, unknown>;
-  schema?: ZodObject;
-  issues?: ZodIssue[];
+  schema?: Schema;
+  issues?: readonly StandardSchemaV1.Issue[];
 
-  constructor(input: TypespecEventsErrorInput) {
+  constructor(input: TypespecEventsErrorInput<Schema>) {
     super(input.message);
     this.name = 'TypespecEventsError';
     this.message = input.message;
@@ -29,28 +34,28 @@ export class TypespecEventsError extends Error {
 }
 
 // Define the type for the events map
-interface EventSchemas {
-  [eventName: string]: ZodObject;
+interface EventSchemas<Schema extends PropertiesSchema> {
+  [eventName: string]: Schema;
 }
 
 // Define the type for the user-provided track function
-type UserTrackFunction = (eventName: string, eventProperties: Record<string, unknown>) => void;
+type UserTrackFunction = (eventName: string, eventProperties: Properties) => void;
 
 // Define the type for the options object passed to defineTracker
-interface DefineTrackerOptions {
+interface DefineTrackerOptions<Schema extends PropertiesSchema> {
   track: UserTrackFunction;
   validation?: boolean; // Optional, default to true
-  events: EventSchemas;
-  onInvalidationError?: (error: TypespecEventsError) => void;
+  events: EventSchemas<Schema>;
+  onInvalidationError?: (error: TypespecEventsError<Schema>) => void;
 }
 
 // Define the type for the returned type-safe track function
-type TypeSafeTrackFunction = <K extends keyof DefineTrackerOptions['events']>(
+type TypeSafeTrackFunction<Schema extends PropertiesSchema> = <K extends keyof DefineTrackerOptions<Schema>['events']>(
   eventName: K,
-  eventProperties: z.infer<DefineTrackerOptions['events'][K]>,
+  eventProperties: StandardSchemaV1.InferInput<DefineTrackerOptions<Schema>['events'][K]>,
 ) => void;
 
-function defaultOnInvalidationError(error: TypespecEventsError) {
+function defaultOnInvalidationError<Schema extends StandardSchemaV1<object>>(error: TypespecEventsError<Schema>) {
   throw error;
 }
 
@@ -59,10 +64,12 @@ function defaultOnInvalidationError(error: TypespecEventsError) {
  * @param options - Configuration options including the track function, validation flag, and event schemas.
  * @returns A type-safe track function.
  */
-export function defineTracker(options: DefineTrackerOptions): TypeSafeTrackFunction {
+export function defineTracker<Schema extends PropertiesSchema>(
+  options: DefineTrackerOptions<Schema>,
+): TypeSafeTrackFunction<Schema> {
   const { track, validation = true, events, onInvalidationError = defaultOnInvalidationError } = options;
 
-  const typeSafeTrack: TypeSafeTrackFunction = (eventName, eventProperties) => {
+  const typeSafeTrack: TypeSafeTrackFunction<Schema> = (eventName, eventProperties) => {
     const schema = events[eventName as string];
 
     if (!schema) {
@@ -80,9 +87,9 @@ export function defineTracker(options: DefineTrackerOptions): TypeSafeTrackFunct
 
     if (validation) {
       // Validate the event properties against the schema
-      const res = schema.safeParse(eventProperties);
-      if (res.success) {
-        track(eventName as string, res.data);
+      const res = schema['~standard'].validate(eventProperties) as StandardSchemaV1.Result<Properties>;
+      if (!res.issues) {
+        track(eventName as string, res.value);
         return;
       }
 
@@ -91,8 +98,8 @@ export function defineTracker(options: DefineTrackerOptions): TypeSafeTrackFunct
           code: 'invalid_event_properties',
           eventName: eventName as string,
           eventProperties,
-          message: res.error.message,
-          issues: res.error.issues,
+          message: 'Invalid properties',
+          issues: res.issues,
           schema,
         }),
       );
