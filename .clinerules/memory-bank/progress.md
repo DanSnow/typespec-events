@@ -14,6 +14,8 @@
 - The `typeSpecTypeToZodString` function in `packages/typespec/src/emitter.ts` has been refactored for better maintainability and exported for improved testability. Comprehensive test cases have been added in `packages/typespec/test/emitter.test.ts` covering various TypeSpec types, and the failing scalar types test was fixed by removing the non-standard `uuid` type. All tests related to `typeSpecTypeToZodString` are now passing.
 - The `playground` package serves as an example of library usage and a location for integration tests that verify emitter output.
 - Integration tests in the playground verify the content of generated files after compilation, rather than programmatically compiling within the test.
+- **The first version of the Go emitter is implemented.** It can generate Go structs from TypeSpec models.
+- **The runtime now accepts a standard schema (`StandardSchemaV1`) for validation.**
 
 ## What's Left to Build
 

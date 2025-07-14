@@ -5,7 +5,7 @@ The core architectural pattern of this project is a monorepo structure utilizing
 ## Key Components
 
 - **TypeSpec Library (`packages/typespec`)**: Contains the core TypeSpec definition files (`.tsp`) for tracking events and potentially custom decorators or functions related to event definition, as well as the custom emitter logic (including Zod emitter and Go/Rust emitters under development).
-- **Go Emitter**: Logic within `packages/typespec` responsible for generating Go structs and related code from TypeSpec definitions (under development).
+- **Go Emitter**: Logic within `packages/typespec` responsible for generating Go structs and related code from TypeSpec definitions.
 - **Rust Emitter**: Logic within `packages/typespec` responsible for generating Rust structs and related code from TypeSpec definitions (under development).
 - **Playground (`packages/playground`)**: Contains example TypeSpec code demonstrating the usage of the `@typespec-events/typespec` library and provides integration tests to verify the generated output.
 - **Runtime (`packages/runtime`)**: Provides utility functions for consuming the generated code in target applications.

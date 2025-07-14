@@ -36,6 +36,8 @@ Implementing the `@typespec-events/runtime` package and enhancing the `@typespec
 - Confirmed successful implementation by running `moon run typespec:test`.
 - Implemented BFS algorithm in `$onEmit` to ensure correct schema generation order.
 - Added a new test case to `packages/typespec/test/emitter.test.ts` to prevent regressions in schema generation order.
+- **Implemented the first version of the Go emitter.**
+- **The runtime now accepts a standard schema (`StandardSchemaV1`) for validation.**
 
 ## Next Steps
 
