@@ -57,12 +57,14 @@ export async function $onEmit(context: EmitContext<EmitterOptions>) {
     options: emitterOptions,
   };
   // Run each emitter
-  for (const emitter of emitters) {
-    emitter.init(program, internalContext);
-    const { path, content } = emitter.emit([...Array.from(nonEventModels), ...eventModels.keys()], eventModels);
-    await emitFile(program, {
-      path: resolvePath(context.emitterOutputDir, path),
-      content,
-    });
-  }
+  await Promise.all(
+    emitters.map(async (emitter) => {
+      emitter.init(program, internalContext);
+      const { path, content } = emitter.emit([...Array.from(nonEventModels), ...eventModels.keys()], eventModels);
+      await emitFile(program, {
+        path: resolvePath(context.emitterOutputDir, path),
+        content,
+      });
+    }),
+  );
 }
