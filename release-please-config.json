@@ -7,7 +7,14 @@
       "draft": false,
       "prerelease": false
     },
-    "packages/typespec,packages/runtime": {
+    "packages/typespec": {
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": false,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false
+    },
+    "packages/runtime": {
       "changelog-path": "CHANGELOG.md",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
