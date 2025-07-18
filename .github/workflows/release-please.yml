@@ -15,7 +15,7 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: '--max-old-space-size=4096'
+      NODE_OPTIONS: '--max-old-space-size=6144'
     outputs:
       tag_name: ${{ steps.release.outputs.tag_name }}
       release_created: ${{ steps.release.outputs.release_created }}
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: release-please
     env:
-      NODE_OPTIONS: '--max-old-space-size=4096'
+      NODE_OPTIONS: '--max-old-space-size=6144'
     if: ${{ needs.release-please.outputs.prs_created && needs.release-please.outputs.pr_number }}
     steps:
       - uses: actions/checkout@v4
