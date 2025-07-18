@@ -8,6 +8,7 @@ permissions:
   attestations: write
   contents: write
   pull-requests: write
+  issues: write
 
 name: release
 
