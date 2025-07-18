@@ -21,3 +21,12 @@ tasks:
       - format
       - --write
     toolchain: node
+  typecheck:
+    command:
+      - tsc
+      - "--noEmit"
+    toolchain: node
+    inputs:
+      - src/**/*
+      - test/**/*.ts
+      - tsconfig.json

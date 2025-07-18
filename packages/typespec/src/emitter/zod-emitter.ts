@@ -230,12 +230,10 @@ export function typeSpecTypeToZodString(
 
 export class ZodEmitter implements LanguageEmitter {
   private program!: Program;
-  private context!: EmitContext<EmitterOptions>;
   private namingConvention: 'camelCase' | 'PascalCase' = 'camelCase';
 
   init(program: Program, context: EmitContext<EmitterOptions>): void {
     this.program = program;
-    this.context = context;
     const emitterOptions = context.options;
     this.namingConvention = emitterOptions.schemaNamingConvention;
   }

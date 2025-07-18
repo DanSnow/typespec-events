@@ -15,7 +15,8 @@
   "scripts": {
     "test": "moon run :build && vitest",
     "build": "moon run :build",
-    "lint": "biome check"
+    "lint": "biome check",
+    "typecheck": "moon run :typecheck"
   },
   "description": "",
   "author": "",

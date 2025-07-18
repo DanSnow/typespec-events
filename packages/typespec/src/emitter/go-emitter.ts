@@ -236,12 +236,10 @@ export function typeSpecTypeToGoString(
 
 export class GoEmitter implements LanguageEmitter {
   private program!: Program;
-  private context!: EmitContext<EmitterOptions>;
   private namingConvention: EmitterOptions['schemaNamingConvention'] = 'camelCase';
 
   init(program: Program, context: EmitContext<EmitterOptions>): void {
     this.program = program;
-    this.context = context;
     const emitterOptions = context.options;
     this.namingConvention = emitterOptions.schemaNamingConvention;
   }
