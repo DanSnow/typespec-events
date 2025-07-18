@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/docs.yml"
-      - "docs/**"
+      - '.github/workflows/docs.yml'
+      - 'docs/**'
   pull_request:
 
 jobs:
@@ -16,6 +16,8 @@ jobs:
       contents: write
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      NODE_OPTIONS: '--max-old-space-size=4096'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,8 +28,8 @@ jobs:
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "22.17.0"
-          cache: "pnpm"
+          node-version: '22.17.0'
+          cache: 'pnpm'
 
       - run: pnpm install
       - uses: actions/cache@v4
