@@ -3,6 +3,7 @@ import "@typespec-events/typespec";
 using TypespecEvents;
 
 @event("user_signed_up")
+@doc("User signed up")
 model UserSignedUpEvent {
   userId: string;
   timestamp: int64;
