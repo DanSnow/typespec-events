@@ -3,5 +3,7 @@ packages:
   - docs
 
 onlyBuiltDependencies:
-  - '@moonrepo/cli'
+  - "@moonrepo/cli"
   - sharp
+  - esbuild
+  - lefthook
