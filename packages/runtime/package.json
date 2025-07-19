@@ -1,6 +1,6 @@
 {
   "name": "@typespec-events/runtime",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Runtime library for TypeSpec Events",
   "main": "dist/index.mjs",
   "type": "module",
