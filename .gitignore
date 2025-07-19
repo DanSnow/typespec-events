@@ -10,3 +10,6 @@ node_modules
 # Default TypeSpec output
 tsp-output/
 dist/
+
+# pnpm pack
+*.tgz

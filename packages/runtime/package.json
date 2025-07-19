@@ -12,9 +12,15 @@
       "default": "./dist/index.mjs"
     }
   },
+  "files": [
+    "dist/**/*",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "moon run build --",
-    "test": "moon run test --"
+    "test": "moon run test --",
+    "prepare": "pnpm run build"
   },
   "devDependencies": {
     "typescript": "^5.4.5",
@@ -28,8 +34,11 @@
     "tracking",
     "zod"
   ],
-  "author": "",
   "license": "MIT",
+  "author": {
+    "name": "DanSnow",
+    "url": "https://github.com/DanSnow"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/DanSnow/typespec-events"

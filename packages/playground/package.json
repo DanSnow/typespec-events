@@ -8,7 +8,7 @@
     "build": "tsp compile ."
   },
   "keywords": [],
-  "author": "",
+  "author": "DanSnow",
   "license": "MIT",
   "dependencies": {
     "@typespec-events/runtime": "workspace:*",
