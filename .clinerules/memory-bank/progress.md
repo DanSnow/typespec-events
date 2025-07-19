@@ -55,6 +55,7 @@ Implemented BFS algorithm in `$onEmit` to ensure correct schema generation order
 Added a new test case to `packages/typespec/test/emitter.test.ts` to prevent regressions in schema generation order.
 
 The plan for developing the `@typespec-events/runtime` package and enhancing the `@typespec-events/typespec` emitter based on the `track.ts` consumption pattern has been outlined and documented.
+- Added the Git repository URL to `packages/runtime/package.json` and `packages/typespec/package.json`.
 
 ## Known Issues
 

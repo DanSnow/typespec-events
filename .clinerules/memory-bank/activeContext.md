@@ -62,6 +62,7 @@ Implementing the `@typespec-events/runtime` package and enhancing the `@typespec
 - **New Decision**: Combine the generated Zod schemas and the event map into a single `events.zod.ts` file.
 - **New Decision**: Enforce snake_case for `@event` decorator names using a diagnostic.
 - **New Decision**: The `eventSchemas` map keys will use the original snake_case event names.
+- Added the Git repository URL to `packages/runtime/package.json` and `packages/typespec/package.json`.
 
 ## Learnings and Project Insights
 
