@@ -30,7 +30,8 @@
   "keywords": [
     "typespec",
     "events",
-    "runtime",
+    "event-tracking",
+    "user-tracking",
     "tracking",
     "zod"
   ],
