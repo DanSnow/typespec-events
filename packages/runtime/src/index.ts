@@ -2,26 +2,27 @@ import type { StandardSchemaV1 } from '@standard-schema/spec';
 
 // biome-ignore lint/suspicious/noExplicitAny: This is for properties
 type Properties = Record<string, any>;
-// biome-ignore lint/suspicious/noExplicitAny: This is for properties
-type PropertiesSchema = StandardSchemaV1<Record<string, any>>;
+type PropertiesSchemaType = StandardSchemaV1<Properties>;
 
-interface TypespecEventsErrorInput<Schema extends PropertiesSchema> {
+type EventSchemaType = Record<string, PropertiesSchemaType>;
+
+interface TypespecEventsErrorInput {
   code: 'invalid_event_name' | 'invalid_event_properties';
   message: string;
   eventName: string;
   eventProperties: Properties;
-  schema?: Schema;
+  schema?: PropertiesSchemaType;
   issues?: readonly StandardSchemaV1.Issue[];
 }
 
-export class TypespecEventsError<Schema extends PropertiesSchema> extends Error {
-  code: TypespecEventsErrorInput<Schema>['code'];
+export class TypespecEventsError extends Error {
+  code: TypespecEventsErrorInput['code'];
   eventName: string;
   eventProperties: Record<string, unknown>;
-  schema?: Schema;
+  schema?: PropertiesSchemaType;
   issues?: readonly StandardSchemaV1.Issue[];
 
-  constructor(input: TypespecEventsErrorInput<Schema>) {
+  constructor(input: TypespecEventsErrorInput) {
     super(input.message);
     this.name = 'TypespecEventsError';
     this.message = input.message;
@@ -33,29 +34,26 @@ export class TypespecEventsError<Schema extends PropertiesSchema> extends Error 
   }
 }
 
-// Define the type for the events map
-interface EventSchemas<Schema extends PropertiesSchema> {
-  [eventName: string]: Schema;
-}
-
 // Define the type for the user-provided track function
 type UserTrackFunction = (eventName: string, eventProperties: Properties) => void;
 
 // Define the type for the options object passed to defineTracker
-interface DefineTrackerOptions<Schema extends PropertiesSchema> {
+interface DefineTrackerOptions<EventSchema extends EventSchemaType> {
   track: UserTrackFunction;
   validation?: boolean; // Optional, default to true
-  events: EventSchemas<Schema>;
-  onInvalidationError?: (error: TypespecEventsError<Schema>) => void;
+  events: EventSchema;
+  onInvalidationError?: (error: TypespecEventsError) => void;
 }
 
 // Define the type for the returned type-safe track function
-type TypeSafeTrackFunction<Schema extends PropertiesSchema> = <K extends keyof DefineTrackerOptions<Schema>['events']>(
+type TypeSafeTrackFunction<EventSchema extends EventSchemaType> = <
+  K extends keyof DefineTrackerOptions<EventSchema>['events'],
+>(
   eventName: K,
-  eventProperties: StandardSchemaV1.InferInput<DefineTrackerOptions<Schema>['events'][K]>,
+  eventProperties: StandardSchemaV1.InferInput<DefineTrackerOptions<EventSchema>['events'][K]>,
 ) => void;
 
-function defaultOnInvalidationError<Schema extends StandardSchemaV1<object>>(error: TypespecEventsError<Schema>) {
+function defaultOnInvalidationError(error: TypespecEventsError) {
   throw error;
 }
 
@@ -64,12 +62,12 @@ function defaultOnInvalidationError<Schema extends StandardSchemaV1<object>>(err
  * @param options - Configuration options including the track function, validation flag, and event schemas.
  * @returns A type-safe track function.
  */
-export function defineTracker<Schema extends PropertiesSchema>(
-  options: DefineTrackerOptions<Schema>,
-): TypeSafeTrackFunction<Schema> {
+export function defineTracker<EventSchema extends EventSchemaType>(
+  options: DefineTrackerOptions<EventSchema>,
+): TypeSafeTrackFunction<EventSchema> {
   const { track, validation = true, events, onInvalidationError = defaultOnInvalidationError } = options;
 
-  const typeSafeTrack: TypeSafeTrackFunction<Schema> = (eventName, eventProperties) => {
+  const typeSafeTrack: TypeSafeTrackFunction<EventSchema> = (eventName, eventProperties) => {
     const schema = events[eventName as string];
 
     if (!schema) {
@@ -78,7 +76,7 @@ export function defineTracker<Schema extends PropertiesSchema>(
           code: 'invalid_event_name',
           eventName: eventName as string,
           eventProperties,
-          message: `Event "${eventName}" not found`,
+          message: `Event "${eventName as string}" not found`,
         }),
       );
       track(eventName as string, eventProperties);

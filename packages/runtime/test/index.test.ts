@@ -1,3 +1,4 @@
+import { attest } from '@ark/attest';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { defineTracker } from '../src/index';
@@ -17,7 +18,7 @@ const UserSignedUpSchema = z.object({
 const MockEvents = {
   product_viewed: ProductViewedSchema,
   user_signed_up: UserSignedUpSchema,
-};
+} as const;
 
 describe('defineTracker', () => {
   it('should return a type-safe track function', () => {
@@ -26,6 +27,21 @@ describe('defineTracker', () => {
       track: mockTrack,
       events: MockEvents,
     });
+
+    attest(tracker).type.toString.snap(`TypeSafeTrackFunction<{
+  readonly product_viewed: ZodObject<
+    {
+      productId: ZodString
+      userId: ZodString
+      timestamp: ZodNumber
+    },
+    $strip
+  >
+  readonly user_signed_up: ZodObject<
+    { userId: ZodString; email: ZodString },
+    $strip
+  >
+}>`);
 
     // Test type safety (this is primarily a compile-time check, but we can test runtime behavior)
     // Correct usage
