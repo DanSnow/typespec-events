@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const LanguageSchema = z.array(z.literal(['zod', 'go']));
+export const LanguageSchema = z.array(z.literal(['zod', 'go', 'markdown']));
 
 export const SchemaNamingConventionSchema = z.literal(['camelCase', 'PascalCase']);
 

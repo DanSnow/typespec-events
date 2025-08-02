@@ -1,6 +1,7 @@
 import { type EmitContext, emitFile, type Model, resolvePath } from '@typespec/compiler';
 import type { LanguageEmitter } from './emitter/framework/emitter-framework.js';
 import { GoEmitter } from './emitter/go-emitter.js';
+import { MarkdownEmitter } from './emitter/markdown-emitter.js';
 import { ZodEmitter } from './emitter/zod-emitter.js';
 import { type EmitterOptions, EmitterOptionsSchema } from './emitter-options.js';
 import { StateKeys } from './lib.js';
@@ -50,6 +51,9 @@ export async function $onEmit(context: EmitContext<EmitterOptions>) {
   }
   if (languages.includes('go')) {
     emitters.push(new GoEmitter());
+  }
+  if (languages.includes('markdown')) {
+    emitters.push(new MarkdownEmitter());
   }
 
   const internalContext: EmitContext<EmitterOptions> = {

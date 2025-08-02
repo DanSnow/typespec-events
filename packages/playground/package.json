@@ -5,7 +5,7 @@
   "description": "Example usage of the @typespec-events/typespec library",
   "type": "module",
   "scripts": {
-    "build": "tsp compile ."
+    "build": "moon run build --"
   },
   "keywords": [],
   "author": "DanSnow",

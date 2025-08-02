@@ -7,6 +7,8 @@ using TypespecEvents;
 model UserSignedUpEvent {
   userId: string;
   timestamp: int64;
+
+  @doc("User email")
   email: string;
 }
 

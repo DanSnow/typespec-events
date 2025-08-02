@@ -90,6 +90,9 @@ importers:
 
   packages/typespec:
     dependencies:
+      markdown-table:
+        specifier: ^3.0.4
+        version: 3.0.4
       scule:
         specifier: ^1.3.0
         version: 1.3.0

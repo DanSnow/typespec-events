@@ -4,6 +4,9 @@ emit: # Emitter name
 options: # Emitter options
   "@typespec-events/typespec":
     schemaNamingConvention: PascalCase
+    languages:
+      - zod
+      - markdown
 # environment-variables:                        # Environment variables which can be used to interpolate emitter options
 #   <variable-name>:
 #     default: "<variable-default>"
