@@ -1,4 +1,4 @@
 {
-  "packages/typespec": "0.0.1",
-  "packages/runtime": "0.0.1"
+  "packages/typespec": "0.0.2",
+  "packages/runtime": "0.0.2"
 }
