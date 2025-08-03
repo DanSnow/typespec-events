@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/DanSnow/typespec-events/compare/typespec-v0.0.1...typespec-v0.0.2) (2025-08-03)
+
+
+### Features
+
+* implement markdown emitter and add languages ([1cea95a](https://github.com/DanSnow/typespec-events/commit/1cea95a55c0688648e2cb1240f462462e3131f6f))
+
 ## 0.0.1 (2025-07-19)
 
 

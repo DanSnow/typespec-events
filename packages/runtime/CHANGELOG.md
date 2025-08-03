@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/DanSnow/typespec-events/compare/runtime-v0.0.1...runtime-v0.0.2) (2025-08-03)
+
+
+### Bug Fixes
+
+* improve tracking function typing ([8814827](https://github.com/DanSnow/typespec-events/commit/88148275cdf471a62c0e182330178ec177d6c1f1))
+
 ## 0.0.1 (2025-07-19)
 
 
