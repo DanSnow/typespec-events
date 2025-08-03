@@ -26,11 +26,11 @@
     "prepare": "test -z \"$MOON_VERSION\" && moon run --no-actions build || true"
   },
   "devDependencies": {
-    "@ark/attest": "^0.48.2",
-    "type-fest": "^4.41.0",
-    "typescript": "^5.4.5",
-    "unbuild": "^3.5.0",
-    "vitest": "^3.2.4"
+    "@ark/attest": "0.48.2",
+    "type-fest": "4.41.0",
+    "typescript": "5.8.3",
+    "unbuild": "3.5.0",
+    "vitest": "3.2.4"
   },
   "keywords": [
     "typespec",
