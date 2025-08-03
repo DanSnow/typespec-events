@@ -16,7 +16,7 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: '--max-old-space-size=6144'
+      NODE_OPTIONS: '--max-old-space-size=8192'
     outputs:
       tag_name: ${{ steps.release.outputs.tag_name }}
       release_created: ${{ steps.release.outputs.release_created }}

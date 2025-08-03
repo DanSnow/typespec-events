@@ -11,7 +11,7 @@ jobs:
     name: runner / tsc
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: '--max-old-space-size=6144'
+      NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +38,7 @@ jobs:
     name: runner / biome
     runs-on: ubuntu-latest
     env:
-      NODE_OPTIONS: '--max-old-space-size=6144'
+      NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
       - uses: actions/checkout@v4
         with:
