@@ -12,6 +12,9 @@
       "default": "./dist/index.mjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist/**/*",
     "LICENSE",
