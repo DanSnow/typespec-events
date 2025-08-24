@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.3](https://github.com/DanSnow/typespec-events/compare/typespec-v0.0.2...typespec-v0.0.3) (2025-08-24)
+
+
+### Bug Fixes
+
+* improve Biome linter and fix test issues ([d44db80](https://github.com/DanSnow/typespec-events/commit/d44db80e45632ecd23fee8c934f70e13ff00945b))
+* refactor event model traversal for non-event models ([f31c583](https://github.com/DanSnow/typespec-events/commit/f31c583f7319d05d6a26d297dedabd8e53101c03))
+
 ## [0.0.2](https://github.com/DanSnow/typespec-events/compare/typespec-v0.0.1...typespec-v0.0.2) (2025-08-03)
 
 
