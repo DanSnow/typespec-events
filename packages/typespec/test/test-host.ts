@@ -74,7 +74,6 @@ export async function emitWithDiagnostics(
 
   const result: Record<string, string> = {};
   for (const file of files) {
-    // biome-ignore lint/nursery/noAwaitInLoop: This is for testing
     result[file] = (await runner.program.host.readFile(resolvePath(emitterOutputDir, file))).text;
   }
   return [result, runner.program.diagnostics];

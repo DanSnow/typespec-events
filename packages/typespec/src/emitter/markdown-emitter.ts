@@ -6,7 +6,7 @@ import { getBaseModel } from './framework/utils.js';
 
 export class MarkdownEmitter implements LanguageEmitter {
   private program!: Program;
-  private namingConvention: 'camelCase' | 'PascalCase' = 'PascalCase'; // Markdown usually uses PascalCase for types
+  private readonly namingConvention: 'camelCase' | 'PascalCase' = 'PascalCase'; // Markdown usually uses PascalCase for types
 
   init(program: Program): void {
     this.program = program;
