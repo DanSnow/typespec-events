@@ -20,6 +20,8 @@ jobs:
     outputs:
       tag_name: ${{ steps.release.outputs.tag_name }}
       releases_created: ${{ steps.release.outputs.releases_created }}
+      compiler_release_created: ${{ steps.release.outputs['packages/typespec--release_created'] }}
+      runtime_release_created: ${{ steps.release.outputs['packages/runtime--release_created'] }}
       prs_created: ${{ steps.release.outputs.prs_created }}
       pr_number: ${{ steps.pr_number.outputs.pr_number }}
     steps:
@@ -63,4 +65,7 @@ jobs:
         with:
           path: .moon/cache
           key: ${{ runner.os }}-moon
-      - run: moon run :publish
+      - run: moon run typespec:publish
+        if: ${{ needs.release-please.outputs.compiler_release_created }}
+      - run: moon run runtime:publish
+        if: ${{ needs.release-please.outputs.runtime_release_created }}
