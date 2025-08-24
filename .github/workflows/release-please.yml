@@ -47,7 +47,7 @@ jobs:
     env:
       NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - uses: moonrepo/setup-toolchain@v0
