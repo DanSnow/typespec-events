@@ -36,7 +36,17 @@ jobs:
         id: pr_number
         env:
           PR: ${{ steps.release.outputs.pr }}
+          TAG_NAME: ${{ steps.release.outputs.tag_name }}
+          RELEASES_CREATED: ${{ steps.release.outputs.releases_created }}
+          COMPILER_RELEASE_CREATED: ${{ steps.release.outputs['packages/typespec--release_created'] }}
+          RUNTIME_RELEASE_CREATED: ${{ steps.release.outputs['packages/runtime--release_created'] }}
+          PRS_CREATED: ${{ steps.release.outputs.prs_created }}
         run: |
+          echo "tag_name=$TAG_NAME"
+          echo "released_created=$RELEASES_CREATED"
+          echo "compiler_release_created=$COMPILER_RELEASE_CREATED"
+          echo "runtime_release_created=$RUNTIME_RELEASE_CREATED"
+          echo "prs_created=$PRS_CREATED"
           echo "pr_number=$(echo $PR | jq .number)" >> $GITHUB_OUTPUT
 
   publish:
