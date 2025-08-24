@@ -19,7 +19,7 @@ jobs:
       NODE_OPTIONS: '--max-old-space-size=8192'
     outputs:
       tag_name: ${{ steps.release.outputs.tag_name }}
-      release_created: ${{ steps.release.outputs.release_created }}
+      releases_created: ${{ steps.release.outputs.releases_created }}
       prs_created: ${{ steps.release.outputs.prs_created }}
       pr_number: ${{ steps.pr_number.outputs.pr_number }}
     steps:
@@ -43,7 +43,7 @@ jobs:
     needs:
       - release-please
 
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.releases_created }}
     env:
       NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
