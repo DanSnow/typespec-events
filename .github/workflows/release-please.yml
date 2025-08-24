@@ -55,7 +55,7 @@ jobs:
     needs:
       - release-please
 
-    if: ${{ needs.release-please.outputs.releases_created }}
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     env:
       NODE_OPTIONS: '--max-old-space-size=8192'
     steps:
@@ -76,6 +76,6 @@ jobs:
           path: .moon/cache
           key: ${{ runner.os }}-moon
       - run: moon run typespec:publish
-        if: ${{ needs.release-please.outputs.compiler_release_created }}
+        if: ${{ needs.release-please.outputs.compiler_release_created == 'true' }}
       - run: moon run runtime:publish
-        if: ${{ needs.release-please.outputs.runtime_release_created }}
+        if: ${{ needs.release-please.outputs.runtime_release_created == 'true' }}
