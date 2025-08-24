@@ -7,6 +7,10 @@ tasks:
       - build.config.ts
     outputs:
       - dist/**/*
+  publish:
+    command: pnpm publish
+    deps:
+      - build
   test:
     command: vitest
     toolchain: node

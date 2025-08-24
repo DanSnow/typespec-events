@@ -4,6 +4,10 @@ tasks:
       - build-ts
       - build-tsp
     toolchain: node
+  publish:
+    command: pnpm publish
+    deps:
+      - build
   build-ts:
     command: unbuild
     toolchain: node
