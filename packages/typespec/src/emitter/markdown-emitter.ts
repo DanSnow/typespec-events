@@ -2,6 +2,7 @@ import type { Model, Program, Type } from '@typespec/compiler';
 import { getDoc } from '@typespec/compiler';
 import { markdownTable } from 'markdown-table';
 import { getModelName, type LanguageEmitter } from './framework/emitter-framework.js';
+import { getBaseModel } from './framework/utils.js';
 
 export class MarkdownEmitter implements LanguageEmitter {
   private program!: Program;
@@ -24,7 +25,11 @@ export class MarkdownEmitter implements LanguageEmitter {
       content += '\n# Other Models\n\n';
       for (const model of models) {
         if (!eventModels.has(model)) {
-          content += this.emitNonEventModel(model);
+          const baseModel = getBaseModel(this.program, model);
+          if (!baseModel) {
+            continue;
+          }
+          content += this.emitNonEventModel(baseModel);
         }
       }
     }

@@ -167,12 +167,6 @@ function handleUnionType(
     typeSpecTypeToGoString(program, v.type, namingConvention, generatedSchemas),
   );
   return `interface{}{${variantGoStrings.join(', ')}}`;
-
-  // const includesNull = variants.some((v: UnionVariant) => isNullType(v.type));
-  // if (includesNull) {
-  //   unionString += '.nullable()';
-  // }
-  // return unionString;
 }
 
 const typeHandlers: Map<

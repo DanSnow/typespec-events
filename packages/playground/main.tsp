@@ -31,3 +31,13 @@ model UserAddressUpdatedEvent {
   oldAddress?: Address;
   newAddress: Address;
 }
+
+model CartItem {
+  name: string;
+  amount: int32;
+}
+
+@event("cart_items_added")
+model CartItemsAdded {
+  items: CartItem[];
+}

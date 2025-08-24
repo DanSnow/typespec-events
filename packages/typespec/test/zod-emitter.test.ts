@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { PACKAGE_NAME } from '../src/consts.js';
 import { typeSpecTypeToZodString } from '../src/emitter/zod-emitter.js';
+import { typespec } from '../src/test-utils.js';
 import { assertDefined, compileTypeSpec, emit } from './test-host.js';
 
 it('emit events.zod.ts with camelCase (default)', async () => {
@@ -138,6 +139,21 @@ describe('typeSpecTypeToZodString', () => {
       model Address { street: string, city: City }
       @event("user_address_updated")
       model UserAddressUpdated { userId: string, address: Address }
+    `);
+    expect(results['events.zod.ts']).toMatchSnapshot();
+  });
+
+  it('emit array models', async () => {
+    const results = await emit(typespec`
+      model CartItem {
+        name: string;
+        amount: int32;
+      }
+
+      @event("cart_items_added")
+      model CartItemsAdded {
+        items: CartItem[];
+      }
     `);
     expect(results['events.zod.ts']).toMatchSnapshot();
   });

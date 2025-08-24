@@ -24,6 +24,20 @@ export const eventSchemas = {
 "
 `;
 
+exports[`typeSpecTypeToZodString > emit array models 1`] = `
+"import { z } from 'zod';
+
+export const cartItemSchema = z.object({ name: z.string(), amount: z.number().int() });
+
+export const cartItemsAddedSchema = z.object({ items: z.array(cartItemSchema) });
+
+
+export const eventSchemas = {
+  "cart_items_added": cartItemsAddedSchema,
+} as const;
+"
+`;
+
 exports[`typeSpecTypeToZodString > emit nested models in correct order 1`] = `
 "import { z } from 'zod';
 
