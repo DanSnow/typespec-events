@@ -48,7 +48,7 @@
     "@types/node": "24.0.14",
     "@typespec/compiler": "latest",
     "@typespec/library-linter": "latest",
-    "proper-tags": "^2.0.2",
+    "proper-tags": "2.0.2",
     "typescript": "5.8.3",
     "unbuild": "3.5.0",
     "vitest": "3.2.4",
