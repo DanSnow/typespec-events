@@ -52,7 +52,7 @@
     "typescript": "5.9.2",
     "unbuild": "3.6.1",
     "vitest": "3.2.4",
-    "zx": "8.7.1"
+    "zx": "8.8.1"
   },
   "scripts": {
     "build": "moon run build --",
