@@ -15,8 +15,8 @@ importers:
         specifier: 1.40.2
         version: 1.40.2
       '@typespec/prettier-plugin-typespec':
-        specifier: 1.3.0
-        version: 1.3.0
+        specifier: 1.4.0
+        version: 1.4.0
       lefthook:
         specifier: 1.12.4
         version: 1.12.4
@@ -108,10 +108,10 @@ importers:
         version: 24.3.1
       '@typespec/compiler':
         specifier: latest
-        version: 1.3.0(@types/node@24.3.1)
+        version: 1.4.0(@types/node@24.3.1)
       '@typespec/library-linter':
         specifier: latest
-        version: 0.73.0(@typespec/compiler@1.3.0(@types/node@24.3.1))
+        version: 0.74.0(@typespec/compiler@1.4.0(@types/node@24.3.1))
       proper-tags:
         specifier: 2.0.2
         version: 2.0.2
@@ -1152,14 +1152,19 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@typespec/library-linter@0.73.0':
-    resolution: {integrity: sha512-UF1QFUIsZQLcv+4bifAWeyBfHzEwiffUHOqWbtERTqf0fRkrAobWWlXpCr9CB/NAV72laq2+pBojO4ttg0HKBQ==}
+  '@typespec/compiler@1.4.0':
+    resolution: {integrity: sha512-/AFiU3ImuhH/vHKzSGv7I2peewdJ7YLhgMCfFDNk6Ae0a5Ylrc8R1GOATVilisEPBFG9lnjHn3uUcyaZs5VWRw==}
+    engines: {node: '>=20.0.0'}
+    hasBin: true
+
+  '@typespec/library-linter@0.74.0':
+    resolution: {integrity: sha512-65+e/+RLUD2SoS18xMMDc/O/8Eh4hlmDFUg+D20cni6TSmXYwQB492WOouQKfxGCCcC1jW9jFAR/GqEwGD295Q==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      '@typespec/compiler': ^1.3.0
+      '@typespec/compiler': ^1.4.0
 
-  '@typespec/prettier-plugin-typespec@1.3.0':
-    resolution: {integrity: sha512-RKBOYTRZvSma3hnlV9yIYC/BJNXkLLP90vIqPgUIGCTiNJ5XOMxXc+dg1ORFFTXo980oN3AnqVnCU3/rqSjvNw==}
+  '@typespec/prettier-plugin-typespec@1.4.0':
+    resolution: {integrity: sha512-P4ATX7Ryu4IKlzJWv36WbEPCn4xrusaJdb2tbm2wJWobhHW6jt7bWGpJXrXvdHMcfk2IYyIpbOx0+EZb7Aof+g==}
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -4365,11 +4370,33 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/library-linter@0.73.0(@typespec/compiler@1.3.0(@types/node@24.3.1))':
+  '@typespec/compiler@1.4.0(@types/node@24.3.1)':
     dependencies:
-      '@typespec/compiler': 1.3.0(@types/node@24.3.1)
+      '@babel/code-frame': 7.27.1
+      '@inquirer/prompts': 7.6.0(@types/node@24.3.1)
+      ajv: 8.17.1
+      change-case: 5.4.4
+      env-paths: 3.0.0
+      globby: 14.1.0
+      is-unicode-supported: 2.1.0
+      mustache: 4.2.0
+      picocolors: 1.1.1
+      prettier: 3.6.2
+      semver: 7.7.2
+      tar: 7.4.3
+      temporal-polyfill: 0.3.0
+      vscode-languageserver: 9.0.1
+      vscode-languageserver-textdocument: 1.0.12
+      yaml: 2.8.0
+      yargs: 18.0.0
+    transitivePeerDependencies:
+      - '@types/node'
 
-  '@typespec/prettier-plugin-typespec@1.3.0':
+  '@typespec/library-linter@0.74.0(@typespec/compiler@1.4.0(@types/node@24.3.1))':
+    dependencies:
+      '@typespec/compiler': 1.4.0(@types/node@24.3.1)
+
+  '@typespec/prettier-plugin-typespec@1.4.0':
     dependencies:
       prettier: 3.6.2
 
