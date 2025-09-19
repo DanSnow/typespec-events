@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@ark/attest": "0.49.0",
-    "type-fest": "4.41.0",
+    "type-fest": "5.0.1",
     "typescript": "5.9.2",
     "unbuild": "3.6.1",
     "vitest": "3.2.4"
