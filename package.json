@@ -9,7 +9,7 @@
     "prettier": "3.6.2",
     "publint": "0.3.13",
     "typescript": "5.9.2",
-    "ultracite": "5.2.17",
+    "ultracite": "5.3.10",
     "vitest": "3.2.4"
   },
   "scripts": {
