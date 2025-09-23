@@ -5,7 +5,7 @@
     "@biomejs/biome": "2.2.4",
     "@moonrepo/cli": "1.40.4",
     "@typespec/prettier-plugin-typespec": "1.4.0",
-    "lefthook": "1.13.1",
+    "lefthook": "1.13.3",
     "prettier": "3.6.2",
     "publint": "0.3.13",
     "typescript": "5.9.2",
