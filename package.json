@@ -8,7 +8,7 @@
     "lefthook": "1.13.6",
     "prettier": "3.6.2",
     "publint": "0.3.13",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "ultracite": "5.2.17",
     "vitest": "3.2.4"
   },
