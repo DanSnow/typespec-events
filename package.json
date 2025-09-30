@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
-    "@moonrepo/cli": "1.40.5",
+    "@moonrepo/cli": "1.41.0",
     "@typespec/prettier-plugin-typespec": "1.4.0",
     "lefthook": "1.13.5",
     "prettier": "3.6.2",
