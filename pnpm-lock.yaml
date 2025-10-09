@@ -15,8 +15,8 @@ importers:
         specifier: 1.41.3
         version: 1.41.3
       '@typespec/prettier-plugin-typespec':
-        specifier: 1.4.0
-        version: 1.4.0
+        specifier: 1.5.0
+        version: 1.5.0
       lefthook:
         specifier: 1.13.6
         version: 1.13.6
@@ -108,10 +108,10 @@ importers:
         version: 24.7.0
       '@typespec/compiler':
         specifier: latest
-        version: 1.4.0(@types/node@24.7.0)
+        version: 1.5.0(@types/node@24.7.0)
       '@typespec/library-linter':
         specifier: latest
-        version: 0.74.0(@typespec/compiler@1.4.0(@types/node@24.7.0))
+        version: 0.75.0(@typespec/compiler@1.5.0(@types/node@24.7.0))
       proper-tags:
         specifier: 2.0.2
         version: 2.0.2
@@ -1152,19 +1152,19 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@typespec/compiler@1.4.0':
-    resolution: {integrity: sha512-/AFiU3ImuhH/vHKzSGv7I2peewdJ7YLhgMCfFDNk6Ae0a5Ylrc8R1GOATVilisEPBFG9lnjHn3uUcyaZs5VWRw==}
+  '@typespec/compiler@1.5.0':
+    resolution: {integrity: sha512-REJgZOEZ9g9CC72GGT0+nLbjW+5WVlCfm1d6w18N5RsUo7vLXs8IPXwq7xZJzoqU99Q9B4keqzPuTU4OrDUTrA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@typespec/library-linter@0.74.0':
-    resolution: {integrity: sha512-65+e/+RLUD2SoS18xMMDc/O/8Eh4hlmDFUg+D20cni6TSmXYwQB492WOouQKfxGCCcC1jW9jFAR/GqEwGD295Q==}
+  '@typespec/library-linter@0.75.0':
+    resolution: {integrity: sha512-oH+Kb+DfkXe9zLlMUX41YcM2rmV9V4XR4LWq9osY5amaAfD5/lSKyDTK96eslyD5o8Nm/f1pLHm1A+Oa4zIelA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      '@typespec/compiler': ^1.4.0
+      '@typespec/compiler': ^1.5.0
 
-  '@typespec/prettier-plugin-typespec@1.4.0':
-    resolution: {integrity: sha512-P4ATX7Ryu4IKlzJWv36WbEPCn4xrusaJdb2tbm2wJWobhHW6jt7bWGpJXrXvdHMcfk2IYyIpbOx0+EZb7Aof+g==}
+  '@typespec/prettier-plugin-typespec@1.5.0':
+    resolution: {integrity: sha512-6tVu8u331LvwE7wi5HjSJosI4j8mJ9EuAdTbBHJk8vPzMCcz08ZwYhenLZ/38X58E1q7iWe2JGujwgpUSzUNDw==}
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -4378,7 +4378,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/compiler@1.4.0(@types/node@24.7.0)':
+  '@typespec/compiler@1.5.0(@types/node@24.7.0)':
     dependencies:
       '@babel/code-frame': 7.27.1
       '@inquirer/prompts': 7.6.0(@types/node@24.7.0)
@@ -4400,11 +4400,11 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/library-linter@0.74.0(@typespec/compiler@1.4.0(@types/node@24.7.0))':
+  '@typespec/library-linter@0.75.0(@typespec/compiler@1.5.0(@types/node@24.7.0))':
     dependencies:
-      '@typespec/compiler': 1.4.0(@types/node@24.7.0)
+      '@typespec/compiler': 1.5.0(@types/node@24.7.0)
 
-  '@typespec/prettier-plugin-typespec@1.4.0':
+  '@typespec/prettier-plugin-typespec@1.5.0':
     dependencies:
       prettier: 3.6.2
 
