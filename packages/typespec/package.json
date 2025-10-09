@@ -45,7 +45,7 @@
     "@typespec/compiler": "^1.1.0"
   },
   "devDependencies": {
-    "@types/node": "24.7.0",
+    "@types/node": "24.7.1",
     "@typespec/compiler": "latest",
     "@typespec/library-linter": "latest",
     "proper-tags": "2.0.2",
