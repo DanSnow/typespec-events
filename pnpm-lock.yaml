@@ -73,8 +73,8 @@ importers:
         version: 4.1.0
     devDependencies:
       '@ark/attest':
-        specifier: 0.50.0
-        version: 0.50.0(typescript@5.9.3)
+        specifier: 0.51.0
+        version: 0.51.0(typescript@5.9.3)
       type-fest:
         specifier: 5.1.0
         version: 5.1.0
@@ -130,14 +130,14 @@ importers:
 
 packages:
 
-  '@ark/attest@0.50.0':
-    resolution: {integrity: sha512-COWjltwmRq24nPfuhenzPTfWKZuTnE/2lZtJtViwaUevlhBY47tiBGz+ZnXVkwMTYWFE85rJ5kDCwOh4Okz2mQ==}
+  '@ark/attest@0.51.0':
+    resolution: {integrity: sha512-omXPbY+o7m1UQkxiKJLVbipdv3ESBF4JlO77bx/I+7JhfwL288gVV04TJTpNUMUnLy1qxJ6Ceua/WKnpsmKwcg==}
     hasBin: true
     peerDependencies:
       typescript: '*'
 
-  '@ark/fs@0.50.0':
-    resolution: {integrity: sha512-6OrxNt2T+/pL4RUMZK/aiVRLIS3acNs5uSpHDyZAP6+OXwXchFSQ1lJTH+uuGBlDWeQxPD7VmymYXLF5s1Eyhw==}
+  '@ark/fs@0.51.0':
+    resolution: {integrity: sha512-aampuHM/geoy1s2CZ8wNaGLZC3idUJiC6mwWeT5QCNqQY5VH38eAH9u4zUFTUZRb5RIsaBQ+MLYFvtReDPTsKw==}
 
   '@ark/regex@0.0.0':
     resolution: {integrity: sha512-p4vsWnd/LRGOdGQglbwOguIVhPmCAf5UzquvnDoxqhhPWTP84wWgi1INea8MgJ4SnI2gp37f13oA4Waz9vwNYg==}
@@ -147,6 +147,9 @@ packages:
 
   '@ark/util@0.50.0':
     resolution: {integrity: sha512-tIkgIMVRpkfXRQIEf0G2CJryZVtHVrqcWHMDa5QKo0OEEBu0tHkRSIMm4Ln8cd8Bn9TPZtvc/kE2Gma8RESPSg==}
+
+  '@ark/util@0.51.0':
+    resolution: {integrity: sha512-OVdvu1NzEFhIRe1/nXUyfRe4hDh8CC8Ag+IYV0RngCc3Gtayny8lIvJjdw+Ef27ClEIuTGlEPEefvoKAm6mu9g==}
 
   '@astrojs/compiler@2.12.2':
     resolution: {integrity: sha512-w2zfvhjNCkNMmMMOn5b0J8+OmUaBL1o40ipMvqcG6NRpdC+lKxmTi48DT8Xw0SzJ3AfmeFLB45zXZXtmbsjcgw==}
@@ -3432,10 +3435,10 @@ packages:
 
 snapshots:
 
-  '@ark/attest@0.50.0(typescript@5.9.3)':
+  '@ark/attest@0.51.0(typescript@5.9.3)':
     dependencies:
-      '@ark/fs': 0.50.0
-      '@ark/util': 0.50.0
+      '@ark/fs': 0.51.0
+      '@ark/util': 0.51.0
       '@prettier/sync': 0.6.1(prettier@3.6.2)
       '@typescript/analyze-trace': 0.10.1
       '@typescript/vfs': 1.6.1(typescript@5.9.3)
@@ -3445,7 +3448,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ark/fs@0.50.0': {}
+  '@ark/fs@0.51.0': {}
 
   '@ark/regex@0.0.0':
     dependencies:
@@ -3456,6 +3459,8 @@ snapshots:
       '@ark/util': 0.50.0
 
   '@ark/util@0.50.0': {}
+
+  '@ark/util@0.51.0': {}
 
   '@astrojs/compiler@2.12.2': {}
 
