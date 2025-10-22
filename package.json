@@ -2,7 +2,7 @@
   "name": "typespec-events",
   "version": "1.0.0",
   "devDependencies": {
-    "@biomejs/biome": "2.2.6",
+    "@biomejs/biome": "2.2.7",
     "@moonrepo/cli": "1.41.5",
     "@typespec/prettier-plugin-typespec": "1.5.0",
     "lefthook": "1.13.6",
