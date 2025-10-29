@@ -73,8 +73,8 @@ importers:
         version: 4.1.0
     devDependencies:
       '@ark/attest':
-        specifier: 0.51.0
-        version: 0.51.0(typescript@5.9.3)
+        specifier: 0.53.0
+        version: 0.53.0(typescript@5.9.3)
       type-fest:
         specifier: 5.1.0
         version: 5.1.0
@@ -130,26 +130,20 @@ importers:
 
 packages:
 
-  '@ark/attest@0.51.0':
-    resolution: {integrity: sha512-omXPbY+o7m1UQkxiKJLVbipdv3ESBF4JlO77bx/I+7JhfwL288gVV04TJTpNUMUnLy1qxJ6Ceua/WKnpsmKwcg==}
+  '@ark/attest@0.53.0':
+    resolution: {integrity: sha512-ZY5FKpa0wuHkonwSnuzWnoYupdJU+xVzzD5D2ARC2pKapXm5bPc303YK6QQ69fkRVne33Mx9ktM5OGzYQqqduQ==}
     hasBin: true
     peerDependencies:
       typescript: '*'
 
-  '@ark/fs@0.51.0':
-    resolution: {integrity: sha512-aampuHM/geoy1s2CZ8wNaGLZC3idUJiC6mwWeT5QCNqQY5VH38eAH9u4zUFTUZRb5RIsaBQ+MLYFvtReDPTsKw==}
+  '@ark/fs@0.53.0':
+    resolution: {integrity: sha512-XL0EbBAZgyy+j9aPhftYaBsbKAW5PTNSKCN6oLRRdrHuHPSAZgR6765/z0YZGhPxHEUNmq0vBoSk8yOLk91dNQ==}
 
-  '@ark/regex@0.0.0':
-    resolution: {integrity: sha512-p4vsWnd/LRGOdGQglbwOguIVhPmCAf5UzquvnDoxqhhPWTP84wWgi1INea8MgJ4SnI2gp37f13oA4Waz9vwNYg==}
+  '@ark/schema@0.53.0':
+    resolution: {integrity: sha512-1PB7RThUiTlmIu8jbSurPrhHpVixPd4C+xNBUF/HrjIENCeDcAMg36n5mpMzED7OQGDVIzpfXXiMnaTiutjHJw==}
 
-  '@ark/schema@0.50.0':
-    resolution: {integrity: sha512-hfmP82GltBZDadIOeR3argKNlYYyB2wyzHp0eeAqAOFBQguglMV/S7Ip2q007bRtKxIMLDqFY6tfPie1dtssaQ==}
-
-  '@ark/util@0.50.0':
-    resolution: {integrity: sha512-tIkgIMVRpkfXRQIEf0G2CJryZVtHVrqcWHMDa5QKo0OEEBu0tHkRSIMm4Ln8cd8Bn9TPZtvc/kE2Gma8RESPSg==}
-
-  '@ark/util@0.51.0':
-    resolution: {integrity: sha512-OVdvu1NzEFhIRe1/nXUyfRe4hDh8CC8Ag+IYV0RngCc3Gtayny8lIvJjdw+Ef27ClEIuTGlEPEefvoKAm6mu9g==}
+  '@ark/util@0.53.0':
+    resolution: {integrity: sha512-TGn4gLlA6dJcQiqrtCtd88JhGb2XBHo6qIejsDre+nxpGuUVW4G3YZGVrwjNBTO0EyR+ykzIo4joHJzOj+/cpA==}
 
   '@astrojs/compiler@2.12.2':
     resolution: {integrity: sha512-w2zfvhjNCkNMmMMOn5b0J8+OmUaBL1o40ipMvqcG6NRpdC+lKxmTi48DT8Xw0SzJ3AfmeFLB45zXZXtmbsjcgw==}
@@ -1254,8 +1248,11 @@ packages:
     resolution: {integrity: sha512-COROpnaoap1E2F000S62r6A60uHZnmlvomhfyT2DlTcrY1OrBKn2UhH7qn5wTC9zMvD0AY7csdPSNwKP+7WiQw==}
     engines: {node: '>= 0.4'}
 
-  arktype@2.1.23:
-    resolution: {integrity: sha512-tyxNWX6xJVMb2EPJJ3OjgQS1G/vIeQRrZuY4DeBNQmh8n7geS+czgbauQWB6Pr+RXiOO8ChEey44XdmxsqGmfQ==}
+  arkregex@0.0.2:
+    resolution: {integrity: sha512-ttjDUICBVoXD/m8bf7eOjx8XMR6yIT2FmmW9vsN0FCcFOygEZvvIX8zK98tTdXkzi0LkRi5CmadB44jFEIyDNA==}
+
+  arktype@2.1.25:
+    resolution: {integrity: sha512-fdj10sNlUPeDRg1QUqMbzJ4Q7gutTOWOpLUNdcC4vxeVrN0G+cbDOvLbuxQOFj/NDAode1G7kwFv4yKwQvupJg==}
 
   array-iterate@2.0.1:
     resolution: {integrity: sha512-I1jXZMjAgCMmxT4qxXfPXa6SthSoE8h6gkSI9BGGNv8mP8G/v0blc+qFnZu6K42vTOiuME596QaLO0TP3Lk0xg==}
@@ -3436,32 +3433,26 @@ packages:
 
 snapshots:
 
-  '@ark/attest@0.51.0(typescript@5.9.3)':
+  '@ark/attest@0.53.0(typescript@5.9.3)':
     dependencies:
-      '@ark/fs': 0.51.0
-      '@ark/util': 0.51.0
+      '@ark/fs': 0.53.0
+      '@ark/util': 0.53.0
       '@prettier/sync': 0.6.1(prettier@3.6.2)
       '@typescript/analyze-trace': 0.10.1
       '@typescript/vfs': 1.6.1(typescript@5.9.3)
-      arktype: 2.1.23
+      arktype: 2.1.25
       prettier: 3.6.2
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@ark/fs@0.51.0': {}
+  '@ark/fs@0.53.0': {}
 
-  '@ark/regex@0.0.0':
+  '@ark/schema@0.53.0':
     dependencies:
-      '@ark/util': 0.50.0
+      '@ark/util': 0.53.0
 
-  '@ark/schema@0.50.0':
-    dependencies:
-      '@ark/util': 0.50.0
-
-  '@ark/util@0.50.0': {}
-
-  '@ark/util@0.51.0': {}
+  '@ark/util@0.53.0': {}
 
   '@astrojs/compiler@2.12.2': {}
 
@@ -4502,11 +4493,15 @@ snapshots:
 
   aria-query@5.3.2: {}
 
-  arktype@2.1.23:
+  arkregex@0.0.2:
     dependencies:
-      '@ark/regex': 0.0.0
-      '@ark/schema': 0.50.0
-      '@ark/util': 0.50.0
+      '@ark/util': 0.53.0
+
+  arktype@2.1.25:
+    dependencies:
+      '@ark/schema': 0.53.0
+      '@ark/util': 0.53.0
+      arkregex: 0.0.2
 
   array-iterate@2.0.1: {}
 
