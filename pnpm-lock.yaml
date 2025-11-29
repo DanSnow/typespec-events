@@ -21,8 +21,8 @@ importers:
         specifier: 1.13.6
         version: 1.13.6
       prettier:
-        specifier: 3.7.2
-        version: 3.7.2
+        specifier: 3.7.3
+        version: 3.7.3
       publint:
         specifier: 0.3.15
         version: 0.3.15
@@ -2639,8 +2639,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.7.2:
-    resolution: {integrity: sha512-n3HV2J6QhItCXndGa3oMWvWFAgN1ibnS7R9mt6iokScBOC0Ul9/iZORmU2IWUMcyAQaMPjTlY3uT34TqocUxMA==}
+  prettier@3.7.3:
+    resolution: {integrity: sha512-QgODejq9K3OzoBbuyobZlUhznP5SKwPqp+6Q6xw6o8gnhr4O85L2U915iM2IDcfF2NPXVaM9zlo9tdwipnYwzg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -6371,7 +6371,7 @@ snapshots:
 
   prettier@3.6.2: {}
 
-  prettier@3.7.2: {}
+  prettier@3.7.3: {}
 
   pretty-bytes@7.0.1: {}
 
