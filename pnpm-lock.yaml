@@ -30,8 +30,8 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
       ultracite:
-        specifier: 5.2.17
-        version: 5.2.17(@inquirer/prompts@8.0.2(@types/node@24.9.1))(@types/debug@4.1.12)(@types/node@24.9.1)(jiti@2.5.1)(typescript@5.9.3)(yaml@2.8.0)
+        specifier: 5.6.4
+        version: 5.6.4(typescript@5.9.3)
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.9.1)(jiti@2.5.1)(yaml@2.8.0)
@@ -1210,8 +1210,8 @@ packages:
   '@swc/helpers@0.5.17':
     resolution: {integrity: sha512-5IKx/Y13RsYd+sauPb2x+U/xZikHjolzfuDgTAl/Tdf3Q8rslRvC19NKDLgAJQ6wsqADk10ntlv08nPFw/gO/A==}
 
-  '@trpc/server@11.5.0':
-    resolution: {integrity: sha512-0IBtkmUCeO2ycn4K45/cqsujnlCQrSvkCo7lFDpg3kGMIPiLyLRciID5IiS7prEjRjeITa+od2aaHTIwONApVw==}
+  '@trpc/server@11.7.2':
+    resolution: {integrity: sha512-AgB26PXY69sckherIhCacKLY49rxE2XP5h38vr/KMZTbLCL1p8IuIoKPjALTcugC2kbyQ7Lbqo2JDVfRSmPmfQ==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -1260,9 +1260,6 @@ packages:
 
   '@types/node@24.9.1':
     resolution: {integrity: sha512-QoiaXANRkSXK6p0Duvt56W208du4P9Uye9hWLWgGMDTEoKPhuenzNcC4vGUmrNkiOKTlIrBoyNQYNpSwfEZXSg==}
-
-  '@types/omelette@0.4.5':
-    resolution: {integrity: sha512-zUCJpVRwfMcZfkxSCGp73mgd3/xesvPz5tQJIORlfP/zkYEyp9KUfF7IP3RRjyZR3DwxkPs96/IFf70GmYZYHQ==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -2507,8 +2504,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  nypm@0.6.1:
-    resolution: {integrity: sha512-hlacBiRiv1k9hZFiphPUkfSQ/ZfQzZDzC+8z0wL3lvDAOUu/2NnChkKuMoMjNur/9OpKuz2QsIeiPVN0xM5Q0w==}
+  nypm@0.6.2:
+    resolution: {integrity: sha512-7eM+hpOtrKrBDCh7Ypu2lJ9Z7PNZBdi/8AT3AX8xoCj43BBVHD0hPSTEvMtkMpfs8FCqBGhxB+uToIQimA111g==}
     engines: {node: ^14.16.0 || >=16.10.0}
     hasBin: true
 
@@ -3153,17 +3150,29 @@ packages:
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
 
-  trpc-cli@0.10.2:
-    resolution: {integrity: sha512-zBkL88AeX0vQLXwEAcX6WUoT4Sopr97nFDFeD1zmW33wHQwBKbszylplNVk6BO/cuhgm/iq8/cG27NokqKA1mw==}
+  trpc-cli@0.11.0:
+    resolution: {integrity: sha512-cFt5LVl1EzwmhZtWa6xPBWr6rgLXGgEOqmcTMIYcI6fLQE1REgu6tS55LmqUJs5kVSXrOd1z5/aufJS71xUUyA==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      '@inquirer/prompts': '*'
-      omelette: '*'
+      '@orpc/server': ^1.0.0
+      '@trpc/server': ^10.45.2 || ^11.0.1
+      '@valibot/to-json-schema': ^1.1.0
+      effect: ^3.14.2 || ^4.0.0
+      valibot: ^1.1.0
+      zod: ^3.24.0 || ^4.0.0
     peerDependenciesMeta:
-      '@inquirer/prompts':
+      '@orpc/server':
         optional: true
-      omelette:
+      '@trpc/server':
+        optional: true
+      '@valibot/to-json-schema':
+        optional: true
+      effect:
+        optional: true
+      valibot:
+        optional: true
+      zod:
         optional: true
 
   tsconfck@3.1.6:
@@ -3199,8 +3208,8 @@ packages:
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
-  ultracite@5.2.17:
-    resolution: {integrity: sha512-NQoChSZhY1eAcujTyz/h+dYR3XKv7b8SDNWM0HVO0zPFw9/WkjNCYqpyh8NSa4YLJYPrnDPCjiaQJvLtFMrbVw==}
+  ultracite@5.6.4:
+    resolution: {integrity: sha512-Ejgh8uYhqgV1QzKAE1vwRHHu24mTCg43DLOJG+gXi7hHSAPAWdDEs9fgBiuYZxH2bsQiWSsEF6hMv5aLJuM6/w==}
     hasBin: true
 
   ultrahtml@1.6.0:
@@ -3601,8 +3610,8 @@ packages:
   zod@4.1.0:
     resolution: {integrity: sha512-UWxluYj2IDX9MHRXTMbB/2eeWrAMmmMSESM+MfT9MQw8U1qo9q5ASW08anoJh6AJ7pkt099fLdNFmfI+4aChHg==}
 
-  zod@4.1.5:
-    resolution: {integrity: sha512-rcUUZqlLJgBC33IT3PNMgsCq6TzLQEG/Ei/KTCU0PedSWRMAXoOUN+4t/0H+Q8bdnLPdqUYnvboJT0bn/229qg==}
+  zod@4.1.13:
+    resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4578,7 +4587,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@trpc/server@11.5.0(typescript@5.9.3)':
+  '@trpc/server@11.7.2(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
@@ -4627,8 +4636,6 @@ snapshots:
   '@types/node@24.9.1':
     dependencies:
       undici-types: 7.16.0
-
-  '@types/omelette@0.4.5': {}
 
   '@types/resolve@1.20.2': {}
 
@@ -6379,7 +6386,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nypm@0.6.1:
+  nypm@0.6.2:
     dependencies:
       citty: 0.1.6
       consola: 3.4.2
@@ -7161,18 +7168,12 @@ snapshots:
 
   trough@2.2.0: {}
 
-  trpc-cli@0.10.2(@inquirer/prompts@8.0.2(@types/node@24.9.1))(typescript@5.9.3):
+  trpc-cli@0.11.0(@trpc/server@11.7.2(typescript@5.9.3))(zod@4.1.13):
     dependencies:
-      '@trpc/server': 11.5.0(typescript@5.9.3)
-      '@types/omelette': 0.4.5
       commander: 14.0.0
-      picocolors: 1.1.1
-      zod: 3.25.76
-      zod-to-json-schema: 3.24.6(zod@3.25.76)
     optionalDependencies:
-      '@inquirer/prompts': 8.0.2(@types/node@24.9.1)
-    transitivePeerDependencies:
-      - typescript
+      '@trpc/server': 11.7.2(typescript@5.9.3)
+      zod: 4.1.13
 
   tsconfck@3.1.6(typescript@5.9.3):
     optionalDependencies:
@@ -7192,38 +7193,21 @@ snapshots:
 
   ufo@1.6.1: {}
 
-  ultracite@5.2.17(@inquirer/prompts@8.0.2(@types/node@24.9.1))(@types/debug@4.1.12)(@types/node@24.9.1)(jiti@2.5.1)(typescript@5.9.3)(yaml@2.8.0):
+  ultracite@5.6.4(typescript@5.9.3):
     dependencies:
       '@clack/prompts': 0.11.0
+      '@trpc/server': 11.7.2(typescript@5.9.3)
       deepmerge: 4.3.1
       jsonc-parser: 3.3.1
-      nypm: 0.6.1
-      trpc-cli: 0.10.2(@inquirer/prompts@8.0.2(@types/node@24.9.1))(typescript@5.9.3)
-      vitest: 3.2.4(@types/debug@4.1.12)(@types/node@24.9.1)(jiti@2.5.1)(yaml@2.8.0)
-      zod: 4.1.5
+      nypm: 0.6.2
+      trpc-cli: 0.11.0(@trpc/server@11.7.2(typescript@5.9.3))(zod@4.1.13)
+      zod: 4.1.13
     transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@inquirer/prompts'
-      - '@types/debug'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jiti
-      - jsdom
-      - less
-      - lightningcss
-      - msw
-      - omelette
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
+      - '@orpc/server'
+      - '@valibot/to-json-schema'
+      - effect
       - typescript
-      - yaml
+      - valibot
 
   ultrahtml@1.6.0: {}
 
@@ -7595,7 +7579,7 @@ snapshots:
 
   zod@4.1.0: {}
 
-  zod@4.1.5: {}
+  zod@4.1.13: {}
 
   zwitch@2.0.4: {}
 
