@@ -4,7 +4,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.7",
     "@moonrepo/cli": "1.41.7",
-    "@typespec/prettier-plugin-typespec": "1.6.0",
+    "@typespec/prettier-plugin-typespec": "1.7.0",
     "lefthook": "1.13.6",
     "prettier": "3.7.4",
     "publint": "0.3.16",
