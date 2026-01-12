@@ -76,8 +76,8 @@ importers:
         specifier: 0.56.0
         version: 0.56.0(typescript@5.9.3)
       type-fest:
-        specifier: 5.3.1
-        version: 5.3.1
+        specifier: 5.4.0
+        version: 5.4.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -108,10 +108,10 @@ importers:
         version: 24.9.1
       '@typespec/compiler':
         specifier: latest
-        version: 1.7.0(@types/node@24.9.1)
+        version: 1.7.1(@types/node@24.9.1)
       '@typespec/library-linter':
         specifier: latest
-        version: 0.77.0(@typespec/compiler@1.7.0(@types/node@24.9.1))
+        version: 0.77.0(@typespec/compiler@1.7.1(@types/node@24.9.1))
       proper-tags:
         specifier: 2.0.2
         version: 2.0.2
@@ -1290,8 +1290,8 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@typespec/compiler@1.7.0':
-    resolution: {integrity: sha512-KE2t5I7u/33M/nsIxdng06FUPrqaGSbMsSEsv51eMwYnj3v1+Z3qTTX/dxHAXRXHcfadNlX/NtyAKju+pkMTFQ==}
+  '@typespec/compiler@1.7.1':
+    resolution: {integrity: sha512-sb3MEsKjFlAx8ZG484exs5Ec+JwmYf2anJqLjMusrV3rRMUhv3fbEulk9MD+l4eOkBS46VMNGqRu0wTn8suVVA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -3187,8 +3187,8 @@ packages:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
 
-  type-fest@5.3.1:
-    resolution: {integrity: sha512-VCn+LMHbd4t6sF3wfU/+HKT63C9OoyrSIf4b+vtWHpt2U7/4InZG467YDNMFMR70DdHjAdpPWmw2lzRdg0Xqqg==}
+  type-fest@5.4.0:
+    resolution: {integrity: sha512-wfkA6r0tBpVfGiyO+zbf9e10QkRQSlK9F2UvyfnjoCmrvH2bjHyhPzhugSBOuq1dog3P0+FKckqe+Xf6WKVjwg==}
     engines: {node: '>=20'}
 
   typescript@5.9.3:
@@ -4680,7 +4680,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/compiler@1.7.0(@types/node@24.9.1)':
+  '@typespec/compiler@1.7.1(@types/node@24.9.1)':
     dependencies:
       '@babel/code-frame': 7.27.1
       '@inquirer/prompts': 8.0.2(@types/node@24.9.1)
@@ -4702,9 +4702,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/library-linter@0.77.0(@typespec/compiler@1.7.0(@types/node@24.9.1))':
+  '@typespec/library-linter@0.77.0(@typespec/compiler@1.7.1(@types/node@24.9.1))':
     dependencies:
-      '@typespec/compiler': 1.7.0(@types/node@24.9.1)
+      '@typespec/compiler': 1.7.1(@types/node@24.9.1)
 
   '@typespec/prettier-plugin-typespec@1.7.0':
     dependencies:
@@ -7184,7 +7184,7 @@ snapshots:
 
   type-fest@4.41.0: {}
 
-  type-fest@5.3.1:
+  type-fest@5.4.0:
     dependencies:
       tagged-tag: 1.0.0
 
