@@ -6,7 +6,7 @@
     "@moonrepo/cli": "1.41.7",
     "@typespec/prettier-plugin-typespec": "1.8.0",
     "lefthook": "1.13.6",
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "publint": "0.3.16",
     "typescript": "5.9.3",
     "ultracite": "5.2.17",
