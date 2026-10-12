@@ -61,7 +61,7 @@
     "test": "moon run test --",
     "prepare": "test -z \"$MOON_VERSION\" && moon run --no-actions build || true"
   },
-  "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
+  "packageManager": "pnpm@10.34.7+sha512.ba98abc585539933375b5971f4bc6d6c73a1b4b7edc4a879e7d102fe5423d1e02309d67c60a11f04955093a96e521ad9c3b138cdd654ca5be563f378b3ae48bd",
   "repository": {
     "type": "git",
     "url": "https://github.com/DanSnow/typespec-events"
